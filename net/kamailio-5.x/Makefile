@@ -9,12 +9,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=kamailio5
-PKG_VERSION:=5.2.1
+PKG_VERSION:=5.3.0
 PKG_RELEASE:=2
 
 PKG_SOURCE_URL:=https://www.kamailio.org/pub/kamailio/$(PKG_VERSION)/src
 PKG_SOURCE:=kamailio-$(PKG_VERSION)$(PKG_VARIANT)_src.tar.gz
-PKG_HASH:=95d2158f97c76124a381364d99de1420f193275c5a1c9f88489c6409702f2c8f
+PKG_HASH:=1bf948620a4036fa473659d3969d5d3887dd25bd2ad20a1ac451ecadaaca447e
 PKG_USE_MIPS16:=0
 
 PKG_LICENSE:=GPL-2.0+
@@ -31,6 +31,7 @@ MODULES_AVAILABLE:= \
 	alias_db \
 	app_jsdt \
 	app_lua \
+	app_lua_sr \
 	app_python \
 	app_python3 \
 	app_ruby \
@@ -112,10 +113,12 @@ MODULES_AVAILABLE:= \
 	json \
 	jsonrpcs \
 	keepalive \
+	kemix \
 	kex \
 	lcr \
 	ldap \
 	log_custom \
+	lost \
 	mangler \
 	matrix \
 	maxfwd \
@@ -169,6 +172,7 @@ MODULES_AVAILABLE:= \
 	sctp \
 	sdpops \
 	seas \
+	secfilter \
 	sipcapture \
 	sipdump \
 	sipt \
@@ -215,6 +219,7 @@ MODULES_AVAILABLE:= \
 	xcap_server \
 	xhttp \
 	xhttp_pi \
+	xhttp_prom \
 	xhttp_rpc \
 	xlog \
 	xmlops \
@@ -271,7 +276,7 @@ $(foreach c,kamailio.cfg kamctlrc,$(call Package/kamailio5/install/conffile,$(1)
 		$(1)/usr/lib/kamailio/
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_CONF) \
-		./files/kamailio.config \
+		./files/kamailio.conf \
 		$(1)/etc/config/kamailio
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) \
@@ -461,6 +466,7 @@ $(eval $(call BuildKamailio5Module,acc_json,Accounting with records exported in 
 $(eval $(call BuildKamailio5Module,alias_db,Database-backend aliases,,))
 $(eval $(call BuildKamailio5Module,app_jsdt,Execute JavaScript scripts,,))
 $(eval $(call BuildKamailio5Module,app_lua,Execute embedded Lua scripts,,+liblua))
+$(eval $(call BuildKamailio5Module,app_lua_sr,Old Lua API,,+kamailio5-mod-app-lua,))
 $(eval $(call BuildKamailio5Module,app_python,Execute Python scripts,,+python-light))
 $(eval $(call BuildKamailio5Module,app_python3,Python3 scripting interpreter,,@BROKEN +python3-light))
 $(eval $(call BuildKamailio5Module,app_ruby,Ruby scripting interpreter,,+libruby))
@@ -542,10 +548,12 @@ $(eval $(call BuildKamailio5Module,janssonrpcc,Alternative JSONRPC server,,+kama
 $(eval $(call BuildKamailio5Module,json,Access to JSON document attributes,,+libjson-c))
 $(eval $(call BuildKamailio5Module,jsonrpcs,JSONRPC server over HTTP,,+libevent2))
 $(eval $(call BuildKamailio5Module,keepalive,SIP keepalive monitoring,+kamailio5-mod-tm,))
+$(eval $(call BuildKamailio5Module,kemix,KEMI extensions,,,))
 $(eval $(call BuildKamailio5Module,kex,Core extensions,,))
 $(eval $(call BuildKamailio5Module,lcr,Least Cost Routing,,+kamailio5-mod-tm +libpcre))
 $(eval $(call BuildKamailio5Module,ldap,LDAP connector,,+libopenldap))
 $(eval $(call BuildKamailio5Module,log_custom,Logging to custom backends,,))
+$(eval $(call BuildKamailio5Module,lost,HELD and LOST routing,,+kamailio5-mod-http-client,))
 $(eval $(call BuildKamailio5Module,mangler,SDP mangling,,))
 $(eval $(call BuildKamailio5Module,matrix,Matrix operations,,))
 $(eval $(call BuildKamailio5Module,maxfwd,Max-Forward processor,,))
@@ -568,14 +576,14 @@ $(eval $(call BuildKamailio5Module,permissions,Permissions control,,))
 $(eval $(call BuildKamailio5Module,pike,Flood detector,,))
 $(eval $(call BuildKamailio5Module,pipelimit,Traffic shaping policies,,+kamailio5-mod-sl))
 $(eval $(call BuildKamailio5Module,prefix_route,Execute based on prefix,,))
-$(eval $(call BuildKamailio5Module,presence,Presence server,,+kamailio5-mod-sl +kamailio5-mod-tm +libxml2))
+$(eval $(call BuildKamailio5Module,presence,Presence server,,+kamailio5-mod-sl +kamailio5-mod-tm,))
 $(eval $(call BuildKamailio5Module,presence_conference,Conference events,,+kamailio5-mod-presence))
 $(eval $(call BuildKamailio5Module,presence_dialoginfo,Dialog Event presence,,+kamailio5-mod-presence))
 $(eval $(call BuildKamailio5Module,presence_mwi,MWI presence,,+kamailio5-mod-presence))
 $(eval $(call BuildKamailio5Module,presence_profile,User profile extensions,,+kamailio5-mod-presence))
 $(eval $(call BuildKamailio5Module,presence_reginfo,Registration info,,+kamailio5-mod-presence))
 $(eval $(call BuildKamailio5Module,presence_xml,XCAP presence,,+kamailio5-mod-presence +kamailio5-mod-xcap-client))
-$(eval $(call BuildKamailio5Module,pua,Presence User Agent,,+kamailio5-mod-tm +libxml2))
+$(eval $(call BuildKamailio5Module,pua,Presence User Agent,,+kamailio5-mod-tm,))
 $(eval $(call BuildKamailio5Module,pua_bla,Bridged Line Appearence PUA,,+kamailio5-mod-presence +kamailio5-mod-pua +kamailio5-mod-usrloc))
 $(eval $(call BuildKamailio5Module,pua_dialoginfo,Dialog Event PUA,,+kamailio5-mod-dialog +kamailio5-mod-pua))
 $(eval $(call BuildKamailio5Module,pua_json,Presence user agent implementation with JSON messages,,+libjson-c))
@@ -588,7 +596,7 @@ $(eval $(call BuildKamailio5Module,qos,QoS control,,+kamailio5-mod-dialog))
 $(eval $(call BuildKamailio5Module,ratelimit,Traffic shapping,,))
 $(eval $(call BuildKamailio5Module,regex,Regular Expression,,+libpcre))
 $(eval $(call BuildKamailio5Module,registrar,SIP Registrar,,+kamailio5-mod-usrloc))
-$(eval $(call BuildKamailio5Module,rls,Resource List Server,,+kamailio5-mod-presence +kamailio5-mod-pua +kamailio5-mod-tm +libxml2))
+$(eval $(call BuildKamailio5Module,rls,Resource List Server,,+kamailio5-mod-presence +kamailio5-mod-pua +kamailio5-mod-tm,))
 $(eval $(call BuildKamailio5Module,rr,Record-Route and Route,,))
 $(eval $(call BuildKamailio5Module,rtimer,Routing Timer,,))
 $(eval $(call BuildKamailio5Module,rtjson,SIP routing based on JSON API,,))
@@ -599,6 +607,7 @@ $(eval $(call BuildKamailio5Module,sca,Shared Call Appearances,,+kamailio5-mod-s
 #$(eval $(call BuildKamailio5Module,sctp,SCTP support,,+libsctp))
 $(eval $(call BuildKamailio5Module,sdpops,Managing SDP payloads,,))
 $(eval $(call BuildKamailio5Module,seas,Sip Express Application Server,,+kamailio5-mod-tm))
+$(eval $(call BuildKamailio5Module,secfilter,Allow/block filters,,,))
 $(eval $(call BuildKamailio5Module,sipcapture,SIP capture,,))
 $(eval $(call BuildKamailio5Module,sipdump,Save SIP traffic,,))
 $(eval $(call BuildKamailio5Module,sipt,SIP-T and SIP-I operations,,))
@@ -638,16 +647,17 @@ $(eval $(call BuildKamailio5Module,uid_uri_db,Database URI operations,,))
 $(eval $(call BuildKamailio5Module,uri_db,Database-backend SIP URI checking,,))
 $(eval $(call BuildKamailio5Module,userblacklist,User blacklists,,+kamailio5-lib-libtrie))
 $(eval $(call BuildKamailio5Module,usrloc,User location,,))
-$(eval $(call BuildKamailio5Module,utils,Misc utilities,,+libcurl +libxml2))
+$(eval $(call BuildKamailio5Module,utils,Misc utilities,,+libcurl,))
 $(eval $(call BuildKamailio5Module,uuid,UUID utilities,,+libuuid))
 $(eval $(call BuildKamailio5Module,websocket,WebSocket transport layer,,+kamailio5-mod-sl +kamailio5-mod-tm +libopenssl +libunistring))
 $(eval $(call BuildKamailio5Module,xcap_client,XCAP Client,,+libcurl))
 $(eval $(call BuildKamailio5Module,xcap_server,XCAP server implementation,,+kamailio5-mod-xhttp +kamailio5-mod-sl))
 $(eval $(call BuildKamailio5Module,xhttp,Basic HTTP request handling server,,+kamailio5-mod-sl))
 $(eval $(call BuildKamailio5Module,xhttp_pi,HTTP provisioning interface,,+kamailio5-mod-xhttp,xhttp_pi,pi_framework.xml))
+$(eval $(call BuildKamailio5Module,xhttp_prom,Prometheus metrics,,+kamailio5-mod-xhttp,))
 $(eval $(call BuildKamailio5Module,xhttp_rpc,RPC commands handling over HTTP,,+kamailio5-mod-xhttp))
 $(eval $(call BuildKamailio5Module,xlog,Advanced logger,,))
 $(eval $(call BuildKamailio5Module,xmlops,XML operations,,))
-$(eval $(call BuildKamailio5Module,xmlrpc,XML RPC module,,+libxml2))
+$(eval $(call BuildKamailio5Module,xmlrpc,XML RPC module,,,))
 $(eval $(call BuildKamailio5Module,xmpp,SIP-to-XMPP Gateway,,+kamailio5-mod-tm +libexpat))
 $(eval $(call BuildKamailio5Module,xprint,Print messages with specifiers,,))
