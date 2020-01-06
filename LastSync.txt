@@ -1,9 +1,9 @@
-commit 9167e30d4003f77793700d27d46fab9d2fbb27c1
-Merge: f542d22 e868f59
+commit fd39e991bb41abfeb277d26c4c30786b5a325ee5
+Merge: e076a61 b372ae6
 Author: micmac1 <sebastian_ml@gmx.net>
-Date:   Sat Aug 31 19:56:14 2019 +0200
+Date:   Fri Dec 20 10:09:34 2019 +0100
 
-    Merge pull request #451 from micmac1/fs1.10-cleanup2
+    Merge pull request #497 from micmac1/fix-weak-md
     
-    freeswitch-stable: use qstrip
+    freeswitch-stable: fix weak md in gentls_cert
 
