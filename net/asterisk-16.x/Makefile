@@ -502,10 +502,9 @@ $(foreach m,$(AST_EMB_MODULES),$(call Package/$(PKG_NAME)/install/module,$(1),$(
 	$(CP) $(PKG_INSTALL_DIR)/opt/var $(1)/opt/
 	rm -rf $(1)/opt/share/asterisk/sounds
 	rm -rf $(1)/opt/share/asterisk/moh/*.wav
-	$(SED) 's,^#!.*bash,#!/opt/bin/bash,' \
-		$(1)/opt/share/asterisk/scripts/ast_{coredumper,logescalator,loggrabber}
-	$(SED) 's,^#!.*python,#!/opt/bin/python,' \
-		$(1)/opt/share/asterisk/scripts/refcounter.py
+	# Entware specific: fix exec path in scripts
+	$(SED) 's,^#!.*bash,#!/opt/bin/bash,;s,^#!.*python,#!/opt/bin/python,' \
+		$(1)/opt/share/asterisk/scripts/*
 endef
 
 define Package/$(PKG_NAME)-sounds
