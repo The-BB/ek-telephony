@@ -9,13 +9,13 @@ include $(TOPDIR)/rules.mk
 
 PRG_NAME:=freeswitch
 PKG_NAME:=$(PRG_NAME)-stable
-PKG_VERSION:=1.10.2
-PKG_RELEASE:=2
+PKG_VERSION:=1.10.3
+PKG_RELEASE:=1
 PKG_MAINTAINER:=Sebastian Kemper <sebastian_ml@gmx.net>
 
 PKG_SOURCE:=$(PRG_NAME)-$(PKG_VERSION).-release.tar.xz
 PKG_SOURCE_URL:=https://files.$(PRG_NAME).org/releases/$(PRG_NAME)
-PKG_HASH:=1fd46dee82ecc52ac90ebab6bd454e34c64950fae7d6dc0589c8daa14bfc7d34
+PKG_HASH:=2d7db07a64ee2f19f9b6e3a4ce76fa42e0fe46c29d95edf1b690a3df3729f307
 
 PKG_CPE_ID:=cpe:/a:freeswitch:freeswitch
 
@@ -25,8 +25,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PRG_NAME)-$(PKG_VERSION).-release
 PKG_BUILD_DEPENDS:= \
 	libjpeg \
 	tiff \
-	perl/host \
-	python/host
+	perl/host
 
 PKG_FIXUP:=autoreconf
 
@@ -103,7 +102,6 @@ FS_STABLE_MOD_AVAILABLE:= \
 	conference \
 	console \
 	curl \
-	cv \
 	dahdi_codec \
 	db \
 	dialplan_asterisk \
@@ -163,7 +161,6 @@ FS_STABLE_MOD_AVAILABLE:= \
 	portaudio_stream \
 	posix_timer \
 	prefix \
-	python \
 	radius_cdr \
 	random \
 	raven \
@@ -240,7 +237,6 @@ PKG_CONFIG_DEPENDS:= \
 	CONFIG_PACKAGE_$(PKG_LIBFTDM)-ftmod-libpri \
 	CONFIG_PACKAGE_$(PKG_LIBFTDM)-ftmod-pritap \
 	CONFIG_PACKAGE_$(PKG_NAME)-misc-perl-esl \
-	CONFIG_PACKAGE_$(PKG_NAME)-misc-python-esl \
 	CONFIG_SOFT_FLOAT
 
 include $(INCLUDE_DIR)/uclibc++.mk
@@ -261,7 +257,6 @@ endif
 
 FS_STABLE_PERL_FEED:=$(TOPDIR)/feeds/packages/lang/perl
 
-include $(TOPDIR)/feeds/packages/lang/python/python-host.mk
 include $(FS_STABLE_PERL_FEED)/perlver.mk
 
 PERL_SITELIB:=/usr/lib/perl$(PERL_MAJOR)/$(PERL_VERSION2)
@@ -269,8 +264,6 @@ PERL_SITELIB:=/usr/lib/perl$(PERL_MAJOR)/$(PERL_VERSION2)
 FS_STABLE_PERL_LIBS:=$(shell grep "^libs=" \
 	$(FS_STABLE_PERL_FEED)/files/base.config | \
 			sed "s/^libs=//;s/'//g")
-
-FS_STABLE_PYTHON_SITE_DIR:=$(FS_STABLE_LIB_DIR)/python$(PYTHON_VERSION)/site-packages
 
 define Download/files
 define Download/$(1)
@@ -373,9 +366,10 @@ $(call Package/$(PKG_NAME)/Default)
   MENU:=1
   USERID:=$(PRG_NAME)=372:$(PRG_NAME)=372
   DEPENDS:= \
-	  +@OPENSSL_WITH_DEPRECATED \
 	  $(CXX_DEPENDS) \
 	  $(ICONV_DEPENDS) \
+	  +!BUSYBOX_DEFAULT_SU:shadow-su \
+	  +@OPENSSL_WITH_DEPRECATED \
 	  +FS_STABLE_WITH_FREETYPE:libfreetype \
 	  +FS_STABLE_WITH_ODBC:unixodbc \
 	  +FS_STABLE_WITH_PNG:libpng \
@@ -475,27 +469,6 @@ define Package/$(PKG_NAME)-misc-perl-esl/install
 					$(1)$(PERL_SITELIB)/ESL
 endef
 
-define Package/$(PKG_NAME)-misc-python-esl
-$(call Package/$(PKG_NAME)/Default)
-  TITLE:=Python ESL
-  DEPENDS:=$(PKG_NAME) +PACKAGE_$(PKG_NAME)-misc-python-esl:python-light
-endef
-
-define Package/$(PKG_NAME)-misc-python-esl/description
-This package contains the Python binding for FreeSWITCH's Event Socket
-Library (ESL).
-endef
-
-define Package/$(PKG_NAME)-misc-python-esl/install
-	$(INSTALL_DIR) $(1)$(FS_STABLE_PYTHON_SITE_DIR)
-	$(INSTALL_BIN) \
-		$(PKG_INSTALL_DIR)$(FS_STABLE_PYTHON_SITE_DIR)/_ESL.so \
-					$(1)$(FS_STABLE_PYTHON_SITE_DIR)
-	$(INSTALL_DATA) \
-		$(PKG_INSTALL_DIR)$(FS_STABLE_PYTHON_SITE_DIR)/ESL.py \
-					$(1)$(FS_STABLE_PYTHON_SITE_DIR)
-endef
-
 define Package/$(PKG_NAME)-misc-timezones
 $(call Package/$(PKG_NAME)/Default)
   TITLE:=Timezones file
@@ -593,12 +566,6 @@ ifeq ($(1),perl)
 		$(PKG_INSTALL_DIR)/usr/perl/$(PRG_NAME).pm \
 							$$(1)$(PERL_SITELIB)
 endif
-ifeq ($(1),python)
-	$(INSTALL_DIR) $$(1)$(FS_STABLE_PYTHON_SITE_DIR)
-	$(INSTALL_DATA) \
-		$(PKG_INSTALL_DIR)$(FS_STABLE_PYTHON_SITE_DIR)/$(PRG_NAME).py \
-					$$(1)$(FS_STABLE_PYTHON_SITE_DIR)
-endif
 endef
 $$(eval $$(call BuildPackage,$(PKG_NAME)-mod-$(subst _,-,$(1))))
 endef
@@ -632,6 +599,7 @@ CONFIGURE_ARGS+= \
 	--with-dbdir=/tmp/$(PRG_NAME)/db \
 	--with-imagesdir=$(FS_STABLE_IMAGES_DIR) \
 	--with-logfiledir=/tmp/$(PRG_NAME)/log \
+	--with-python=no \
 	--with-recordingsdir=/tmp/$(PRG_NAME)/recordings \
 	--with-storagedir=/tmp/$(PRG_NAME)/storage \
 	$(call autoconf_bool,CONFIG_FS_STABLE_WITH_DEBUG,debug) \
@@ -646,14 +614,6 @@ CONFIGURE_ARGS+= \
 	$(if $(CONFIG_FS_STABLE_WITH_PNG),,--without-png) \
 	$(if $(CONFIG_PACKAGE_$(PKG_LIBFTDM)-ftmod-libpri),--with-libpri="$(STAGING_DIR)/usr",--without-libpri) \
 	$(if $(CONFIG_PACKAGE_$(PKG_LIBFTDM)-ftmod-pritap),--with-pritap,--without-pritap)
-
-ifneq ($(CONFIG_PACKAGE_$(PKG_NAME)-misc-python-esl)$(CONFIG_PACKAGE_$(PKG_NAME)-mod-python),)
-CONFIGURE_ARGS+= \
-	--with-python=$(STAGING_DIR_HOSTPKG)/bin/python$(PYTHON_VERSION)
-else
-CONFIGURE_ARGS+= \
-	--with-python=no
-endif
 
 ifeq ($(CONFIG_PACKAGE_$(PKG_NAME)-mod-erlang-event)$(CONFIG_PACKAGE_$(PKG_NAME)-mod-kazoo),)
 CONFIGURE_ARGS+= \
@@ -673,11 +633,6 @@ endif
 # would have the core link to it.
 CONFIGURE_ARGS+= \
 	--without-pgsql
-
-# libpq pkg-config file is broken, see
-# https://github.com/openwrt/packages/pull/11507
-CONFIGURE_ARGS+= \
-	--disable-core-pgsql-pkgconfig
 
 # Don't want host-php
 CONFIGURE_VARS+= \
@@ -736,15 +691,6 @@ else
 CONFIGURE_VARS+= \
 	ac_cv_have_perl=no \
 	ac_cv_prog_PERL=false
-endif
-
-ifneq ($(CONFIG_PACKAGE_$(PKG_NAME)-misc-python-esl)$(CONFIG_PACKAGE_$(PKG_NAME)-mod-python),)
-CONFIGURE_VARS+= \
-	PYTHON_CFLAGS="-I$(STAGING_DIR)/usr/include/python$(PYTHON_VERSION)" \
-	PYTHON_LDFLAGS="-lpython$(PYTHON_VERSION)" \
-	PYTHON_LIB="python$(PYTHON_VERSION)" \
-	PYTHON_LIBDIR="$(FS_STABLE_LIB_DIR)" \
-	PYTHON_SITE_DIR="$(FS_STABLE_PYTHON_SITE_DIR)"
 endif
 
 # mod_radius_cdr runs configure in libs/freeradius-client. Let
@@ -869,9 +815,6 @@ endif
 ifneq ($(CONFIG_PACKAGE_$(PKG_NAME)-misc-perl-esl),)
 	$(call Build/Compile/Default,-C $(PKG_BUILD_DIR)/libs/esl perlmod)
 endif
-ifneq ($(CONFIG_PACKAGE_$(PKG_NAME)-misc-python-esl),)
-	$(call Build/Compile/Default,-C $(PKG_BUILD_DIR)/libs/esl pymod)
-endif
 endef
 
 define Build/Install
@@ -884,9 +827,6 @@ ifneq ($(CONFIG_PACKAGE_$(PKG_NAME)),)
 endif
 ifneq ($(CONFIG_PACKAGE_$(PKG_NAME)-misc-perl-esl),)
 	$(call Build/Compile/Default,-C $(PKG_BUILD_DIR)/libs/esl DESTDIR=$(PKG_INSTALL_DIR) perlmod-install)
-endif
-ifneq ($(CONFIG_PACKAGE_$(PKG_NAME)-misc-python-esl),)
-	$(call Build/Install/Default,-C $(PKG_BUILD_DIR)/libs/esl pymod-install)
 endif
 endef
 
@@ -920,7 +860,6 @@ endef
 $(eval $(call BuildPackage,$(PKG_LIBFTDM)))
 $(eval $(call BuildPackage,$(PKG_NAME)))
 $(eval $(call BuildPackage,$(PKG_NAME)-misc-perl-esl))
-$(eval $(call BuildPackage,$(PKG_NAME)-misc-python-esl))
 $(eval $(call BuildPackage,$(PKG_NAME)-misc-timezones))
 
 ################################
@@ -1017,7 +956,6 @@ $(eval $(call Package/$(PKG_NAME)/Module,commands,Commands,This module provides 
 $(eval $(call Package/$(PKG_NAME)/Module,conference,Conference,This module provides multi-party conferencing.,))
 $(eval $(call Package/$(PKG_NAME)/Module,console,Console logger,Allows control over what messages get logged to the console.,))
 $(eval $(call Package/$(PKG_NAME)/Module,curl,cURL,This module provides an API for making HTTP requests with cURL.,))
-$(eval $(call Package/$(PKG_NAME)/Module,cv,OpenCV,This module exposes opencv actions to enable computer vision actions.,+opencv @BROKEN)) # opencv package too stripped-down
 $(eval $(call Package/$(PKG_NAME)/Module,dahdi_codec,DAHDI codec,DAHDI codec module.,))
 $(eval $(call Package/$(PKG_NAME)/Module,db,DB,This module implements a simple db API with group support. Also can be\nused as a limit db backend.,))
 $(eval $(call Package/$(PKG_NAME)/Module,dialplan_asterisk,Asterisk dialplan,Asterisk extensions.conf style dialplan parser.,))
@@ -1077,7 +1015,6 @@ $(eval $(call Package/$(PKG_NAME)/Module,portaudio,Portaudio,Voice through a loc
 $(eval $(call Package/$(PKG_NAME)/Module,portaudio_stream,Portaudio streaming,Stream from an external audio source for Music on Hold.,+portaudio))
 $(eval $(call Package/$(PKG_NAME)/Module,posix_timer,POSIX timer,Add POSIX timer support.,))
 $(eval $(call Package/$(PKG_NAME)/Module,prefix,Prefix match,This module provides a data store with fast lookups by the longest\nprefix match rule.,))
-$(eval $(call Package/$(PKG_NAME)/Module,python,Python,Python support module.,+python-light))
 $(eval $(call Package/$(PKG_NAME)/Module,radius_cdr,Radius CDR,Radius Call Detail Record handler.,))
 $(eval $(call Package/$(PKG_NAME)/Module,random,Entropy,This module extracts entropy from FreeSWITCH and feeds it into\n/dev/random.,))
 $(eval $(call Package/$(PKG_NAME)/Module,raven,Raven logging,Adds support for logging to Raven instances.,))
