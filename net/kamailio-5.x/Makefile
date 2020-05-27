@@ -9,20 +9,21 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=kamailio5
-PKG_VERSION:=5.3.0
-PKG_RELEASE:=2
+PKG_VERSION:=5.3.3
+PKG_RELEASE:=3
 
 PKG_SOURCE_URL:=https://www.kamailio.org/pub/kamailio/$(PKG_VERSION)/src
 PKG_SOURCE:=kamailio-$(PKG_VERSION)$(PKG_VARIANT)_src.tar.gz
-PKG_HASH:=1bf948620a4036fa473659d3969d5d3887dd25bd2ad20a1ac451ecadaaca447e
+PKG_HASH:=2443f8aad3584b009b51948dc41982060b9ffc76be8016aa4e7de25b83be5b0a
 PKG_USE_MIPS16:=0
 
 PKG_LICENSE:=GPL-2.0+
 PKG_LICENSE_FILES:=COPYING
 PKG_MAINTAINER:=Jiri Slachta <jiri@slachta.eu>
 
-# Defining PKG_BUILD_PARALLEL to 1 would be a noop due to the way we call make
-#PKG_BUILD_PARALLEL:=1
+PKG_INSTALL:=1
+
+PKG_BUILD_PARALLEL:=1
 
 MODULES_AVAILABLE:= \
 	acc \
@@ -32,7 +33,6 @@ MODULES_AVAILABLE:= \
 	app_jsdt \
 	app_lua \
 	app_lua_sr \
-	app_python \
 	app_python3 \
 	app_ruby \
 	app_sqlang \
@@ -232,7 +232,7 @@ PKG_CONFIG_DEPENDS:= \
 
 include $(INCLUDE_DIR)/nls.mk
 include $(INCLUDE_DIR)/package.mk
-include $(TOPDIR)/feeds/packages/lang/python/python-host.mk
+include $(TOPDIR)/feeds/packages/lang/python/python3-version.mk
 
 # Build reproducibly
 TARGET_CFLAGS += -DVERSION_NODATE=1
@@ -380,8 +380,6 @@ $(foreach d,$(5),$(call Package/kamailio5/install/dbfiles,$$(1),$(d));)
 $$(eval $$(call BuildPackage,kamailio5-mod-$(subst _,-,$(1))))
 endef
 
-TARGET_CPPFLAGS+=$(if $(CONFIG_PACKAGE_kamailio5-mod-app-python),-I$(STAGING_DIR)/usr/include/python$(PYTHON_VERSION))
-
 # Kamailio always builds a baseline of packages. The "standard" group is
 # the lightest baseline.
 
@@ -392,9 +390,6 @@ TARGET_CPPFLAGS+=$(if $(CONFIG_PACKAGE_kamailio5-mod-app-python),-I$(STAGING_DIR
 # The same is done with:
 #   "ims_diameter_server" -> libkamailio_ims
 #   "carrierroute" -> libtrie
-
-# "lib_target" is specified in order for the modules to get a proper
-# RPATH, as otherwise they would not find the internal libraries.
 
 EXTRA_MODULES:= \
 	$(if $(CONFIG_PACKAGE_kamailio5-mod-carrierroute),,carrierroute) \
@@ -413,35 +408,36 @@ ifeq ($(call qstrip,$(CONFIG_ARCH)),mips)
 CPU_MIPS2:=mips32 24kc 34kc 74kc
 endif
 
-PKG_MAKE_ARGS:= \
-	prefix=/ \
-	cfg_dir=/etc/kamailio/ \
-	bin_dir=/usr/sbin/ \
-	data_dir=/usr/share/kamailio/ \
-	lib_dir=/usr/lib/kamailio/ \
-	modules_dir=/usr/lib/kamailio/ \
+MAKE_FLAGS += \
+	$(if $(findstring $(call qstrip,$(CONFIG_CPU_TYPE)),$(CPU_MIPS2)),ARCH="mips2",ARCH="$(ARCH)") \
+	CC_EXTRA_OPTS="$(TARGET_CFLAGS) $(TARGET_CPPFLAGS)" \
+	LD="$(TARGET_CC)" \
+	LD_EXTRA_OPTS="$(TARGET_LDFLAGS)" \
+	LIBDIR=lib \
+	PREFIX=/usr \
+	cfg_prefix="$(PKG_INSTALL_DIR)" \
+	cfg_target=/etc/kamailio \
 	group_include="standard" \
 	include_modules="$$(INCL_MODULES) $(EXTRA_MODULES)" \
-	cfg_target=/etc/kamailio/ \
-	lib_target=/usr/lib/kamailio/ \
-	run_target=/var/run/kamailio/ \
-	CFLAGS="$(TARGET_CFLAGS) $(TARGET_CPPFLAGS)" \
-	LD_EXTRA_OPTS="$(TARGET_LDFLAGS)" \
-	LOCALBASE="$(STAGING_DIR)/usr" \
-	SYSBASE="$(STAGING_DIR)/usr" \
-	CROSS_COMPILE=$(TARGET_CROSS) \
-	CC="$(TARGET_CC)" \
-	$(if $(findstring $(call qstrip,$(CONFIG_CPU_TYPE)),$(CPU_MIPS2)),ARCH="mips2",ARCH="$(ARCH)") \
-	DESTDIR=$(PKG_INSTALL_DIR) \
-	quiet=verbose
+	quiet=verbose \
+	run_prefix=""
+
+MAKE_VARS += \
+	PYTHON3=python$(PYTHON3_VERSION)
+
+define Build/Prepare
+	$(call Build/Prepare/Default)
+	# Upstream adds "-funroll-loops" to compiler flags, which increases
+	# binary size significantly. Remove this flag.
+	$(SED) 's/[ ]*-funroll-loops//' $(PKG_BUILD_DIR)/src/Makefile.defs
+endef
 
 define Build/Configure
 endef
 
 define Build/Compile
-	$(MAKE) -C $(PKG_BUILD_DIR) $(PKG_MAKE_ARGS) cfg
-	$(MAKE) -C $(PKG_BUILD_DIR) quiet=verbose all
-	$(MAKE) -C $(PKG_BUILD_DIR) quiet=verbose install
+	$(call Build/Compile/Default,cfg)
+	$(call Build/Compile/Default,all)
 endef
 
 $(eval $(call BuildPackage,kamailio5))
@@ -467,8 +463,7 @@ $(eval $(call BuildKamailio5Module,alias_db,Database-backend aliases,,))
 $(eval $(call BuildKamailio5Module,app_jsdt,Execute JavaScript scripts,,))
 $(eval $(call BuildKamailio5Module,app_lua,Execute embedded Lua scripts,,+liblua))
 $(eval $(call BuildKamailio5Module,app_lua_sr,Old Lua API,,+kamailio5-mod-app-lua,))
-$(eval $(call BuildKamailio5Module,app_python,Execute Python scripts,,+python-light))
-$(eval $(call BuildKamailio5Module,app_python3,Python3 scripting interpreter,,@BROKEN +python3-light))
+$(eval $(call BuildKamailio5Module,app_python3,Python3 scripting interpreter,,+python3-light))
 $(eval $(call BuildKamailio5Module,app_ruby,Ruby scripting interpreter,,+libruby))
 $(eval $(call BuildKamailio5Module,app_sqlang,Execute Squirrel language scripts,,+libstdcpp))
 $(eval $(call BuildKamailio5Module,async,Asynchronous SIP handling functions,,+kamailio5-mod-tm +kamailio5-mod-tmx))
