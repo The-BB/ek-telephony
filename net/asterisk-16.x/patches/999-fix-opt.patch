@@ -261,7 +261,7 @@
  
  #define INTRO "vm-intro"
  
-@@ -2715,7 +2715,7 @@ static int imap_store_file(const char *d
+@@ -2724,7 +2724,7 @@ static int imap_store_file(const char *d
  	char mailbox[256];
  	char *stringp;
  	FILE *p = NULL;
@@ -270,7 +270,7 @@
  	long len;
  	void *buf;
  	int tempcopy = 0;
-@@ -5621,7 +5621,7 @@ static int sendmail(char *srcemail,
+@@ -5628,7 +5628,7 @@ static int sendmail(char *srcemail,
  		const char *msg_id)
  {
  	FILE *p = NULL;
@@ -279,7 +279,7 @@
  	char tmp2[256];
  	char *stringp;
  
-@@ -5660,7 +5660,7 @@ static int sendpage(char *srcemail, char
+@@ -5667,7 +5667,7 @@ static int sendpage(char *srcemail, char
  	char host[MAXHOSTNAMELEN] = "";
  	char who[256];
  	char dur[PATH_MAX];
@@ -288,7 +288,7 @@
  	char tmp2[PATH_MAX];
  	struct ast_tm tm;
  	FILE *p;
-@@ -15100,7 +15100,7 @@ AST_TEST_DEFINE(test_voicemail_load_conf
+@@ -15116,7 +15116,7 @@ AST_TEST_DEFINE(test_voicemail_load_conf
  	int res = AST_TEST_PASS;
  	struct ast_vm_user *vmu;
  	struct ast_config *cfg;
@@ -473,7 +473,7 @@
  				is set to <literal>no</literal>, this function can only be executed from the
 --- a/main/abstract_jb.c
 +++ b/main/abstract_jb.c
-@@ -444,7 +444,7 @@ static int create_jb(struct ast_channel
+@@ -449,7 +449,7 @@ static int create_jb(struct ast_channel
  	/* Create a frame log file */
  	if (ast_test_flag(jbconf, AST_JB_LOG)) {
  		struct ast_channel *bridged = ast_channel_bridge_peer(chan);
@@ -482,7 +482,7 @@
  		int safe_fd;
  
  		snprintf(name2, sizeof(name2), "%s", ast_channel_name(chan));
-@@ -461,7 +461,7 @@ static int create_jb(struct ast_channel
+@@ -466,7 +466,7 @@ static int create_jb(struct ast_channel
  		}
  
  		snprintf(logfile_pathname, sizeof(logfile_pathname),
@@ -493,7 +493,7 @@
  		if (safe_fd < 0 || link(safe_logfile, logfile_pathname) || unlink(safe_logfile) || !(jb->logfile = fdopen(safe_fd, "w+b"))) {
 --- a/main/asterisk.c
 +++ b/main/asterisk.c
-@@ -1191,7 +1191,7 @@ int ast_safe_system(const char *s)
+@@ -1192,7 +1192,7 @@ int ast_safe_system(const char *s)
  	pid_t pid = safe_exec_prep(0);
  
  	if (pid == 0) {
@@ -502,7 +502,7 @@
  		_exit(1);
  		/* noreturn from _exit */
  	}
-@@ -2252,7 +2252,7 @@ static void consolehandler(const char *s
+@@ -2253,7 +2253,7 @@ static void consolehandler(const char *s
  		if (s[1])
  			ast_safe_system(s+1);
  		else
@@ -511,7 +511,7 @@
  	} else
  		ast_cli_command(STDOUT_FILENO, s);
  }
-@@ -2274,7 +2274,7 @@ static int remoteconsolehandler(const ch
+@@ -2275,7 +2275,7 @@ static int remoteconsolehandler(const ch
  		if (s[1])
  			ast_safe_system(s+1);
  		else
@@ -520,7 +520,7 @@
  		ret = 1;
  	} else if ((strncasecmp(s, "quit", 4) == 0 || strncasecmp(s, "exit", 4) == 0) &&
  	    (s[4] == '\0' || isspace(s[4]))) {
-@@ -3317,7 +3317,7 @@ static int show_cli_help(void)
+@@ -3318,7 +3318,7 @@ static int show_cli_help(void)
  	printf("   -r              Connect to Asterisk on this machine\n");
  	printf("   -R              Same as -r, except attempt to reconnect if disconnected\n");
  	printf("   -s <socket>     Connect to Asterisk via socket <socket> (only valid with -r)\n");
@@ -542,7 +542,7 @@
  	if (fd < 0) {
 --- a/main/config.c
 +++ b/main/config.c
-@@ -1909,7 +1909,7 @@ static int process_text_line(struct ast_
+@@ -1925,7 +1925,7 @@ static int process_text_line(struct ast_
  
  			if (!ast_test_flag(&flags, CONFIG_FLAG_NOCACHE))
  				config_cache_attribute(configfile, ATTRIBUTE_EXEC, NULL, who_asked);
@@ -553,7 +553,7 @@
  
 --- a/main/file.c
 +++ b/main/file.c
-@@ -403,7 +403,7 @@ static void filestream_destructor(void *
+@@ -405,7 +405,7 @@ static void filestream_destructor(void *
  	if (f->realfilename && f->filename) {
  		pid = ast_safe_fork(0);
  		if (!pid) {
@@ -564,7 +564,7 @@
  		else if (pid > 0) {
 --- a/main/manager.c
 +++ b/main/manager.c
-@@ -5214,7 +5214,7 @@ static int action_command(struct mansess
+@@ -5219,7 +5219,7 @@ static int action_command(struct mansess
  {
  	const char *cmd = astman_get_header(m, "Command");
  	char *buf = NULL, *final_buf = NULL, *delim, *output;
@@ -573,7 +573,7 @@
  	int fd, ret;
  	off_t len;
  
-@@ -7840,7 +7840,7 @@ static int generic_http_callback(struct
+@@ -7846,7 +7846,7 @@ static int generic_http_callback(struct
  	int fd;
  	int blastaway = 0;
  	struct ast_variable *params = get_params;
@@ -582,7 +582,7 @@
  	struct ast_str *http_header = NULL, *out = NULL;
  	struct message m = { 0 };
  
-@@ -8049,7 +8049,7 @@ static int auth_http_callback(struct ast
+@@ -8055,7 +8055,7 @@ static int auth_http_callback(struct ast
  	struct mansession_session *session = NULL;
  	struct mansession s = { .session = NULL, .tcptls_session = ser };
  	struct ast_variable *v, *params = get_params;
@@ -681,7 +681,7 @@
  				close(fd);
 --- a/res/res_agi.c
 +++ b/res/res_agi.c
-@@ -663,7 +663,7 @@
+@@ -669,7 +669,7 @@
  				'digits/at' IMp</literal>).</para>
  			</parameter>
  			<parameter name="timezone">
@@ -690,7 +690,7 @@
  				Defaults to machine default.</para>
  			</parameter>
  		</syntax>
-@@ -1180,9 +1180,9 @@
+@@ -1186,9 +1186,9 @@
  			variable to <literal>yes</literal>.</para>
  			</note>
  			<example title="AGI invocation examples">
