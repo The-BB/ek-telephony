@@ -1,6 +1,6 @@
---- a/libbcg729.pc.in	2015-10-08 18:54:00.000000000 +0300
-+++ b/libbcg729.pc.in	2020-03-02 01:49:14.465072812 +0300
-@@ -1,6 +1,7 @@
+--- a/libbcg729.pc.in
++++ b/libbcg729.pc.in
+@@ -1,10 +1,11 @@
  # This is a comment
  prefix=@prefix@
  exec_prefix=@exec_prefix@
@@ -8,3 +8,9 @@
  includedir=@includedir@
  
  Name:  libbcg729
+ Description: Implement the ITU G729 speech codec. 
+ Version: @PACKAGE_VERSION@                           
+-Libs: -L@libdir@ -lbcg729 
+-Cflags: -I@includedir@ 
++Libs: -L${libdir} -lbcg729 
++Cflags: -I${includedir} 
