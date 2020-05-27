@@ -1,9 +1,9 @@
-commit 2d17fc02950a0500e7366907195ef38b4df0d133 (HEAD -> master, origin/master, origin/HEAD)
-Merge: 59ecaa5 9cff8ae
-Author: micmac1 <sebastian_ml@gmx.net>
-Date:   Sat Mar 7 10:01:53 2020 +0100
+commit 8765715d80323173a41a987a713c0fcc6d337616 (HEAD -> master, origin/master, origin/HEAD)
+Merge: fbc8250 985365c
+Author: Jiri Slachta <jiri@slachta.eu>
+Date:   Sun May 24 21:04:29 2020 +0200
 
-    Merge pull request #504 from micmac1/pg-fs
+    Merge pull request #531 from micmac1/ast16100
     
-    freeswitch-stable: use pg_config for now
+    asterisk-16.x: bump to 16.10.0 + init/config changes
 
