@@ -1,9 +1,8 @@
-commit 062878a672c948098948024af8ad19af89be6f57 (HEAD -> master, origin/master, origin/HEAD)
-Merge: 5eb2c8a 2bcd4e2
-Author: micmac1 <sebastian_ml@gmx.net>
-Date:   Thu Sep 3 19:41:03 2020 +0200
+commit 302e905c55a0ade705fd826f4417c8f065b1469e (HEAD -> master, origin/master, origin/HEAD)
+Merge: c8931b6 94df06b
+Author: Jiri Slachta <jiri@slachta.eu>
+Date:   Mon Nov 23 22:02:10 2020 +0100
 
-    Merge pull request #563 from micmac1/spandsp3
+    Merge pull request #582 from neheb/miax
     
-    spandsp3: new package
-
+    miax: fix compilation errors under uClibc-ng and musl
