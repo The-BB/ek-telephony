@@ -9,19 +9,23 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=rtpengine
-PKG_VERSION:=mr8.5.1.1
-PKG_RELEASE:=2
+PKG_VERSION:=mr8.5.2.3
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/sipwise/rtpengine/tar.gz/$(PKG_VERSION)?
-PKG_HASH:=170377d663f9f9da790aa1ff262001940bfc4e930547807182fcceb8d8ee987e
+PKG_HASH:=e2c0f94984753f321e1db0a97f81af18f3e9f7005a2ca67766ddef2b6c8d4427
 
 PKG_LICENSE:=GPL-3.0
 PKG_LICENSE_FILES:=LICENSE
 
 PKG_MAINTAINER:=Sebastian Kemper <sebastian_ml@gmx.net>
 
-PKG_BUILD_PARALLEL:=1
+# When building in parallel, some files (like streambuf.c or dtmflib.c)
+# are generated multiple times by the rtpengine build system.
+# Intermittently they then contain garbage, leading to redefinition
+# errors.
+PKG_BUILD_PARALLEL:=0
 
 PKG_BUILD_DEPENDS:=gperf/host
 
