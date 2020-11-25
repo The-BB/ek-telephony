@@ -9,12 +9,12 @@ include $(TOPDIR)/rules.mk
 
 AST_MAJOR_VERSION:=16
 PKG_NAME:=asterisk$(AST_MAJOR_VERSION)
-PKG_VERSION:=$(AST_MAJOR_VERSION).10.0
+PKG_VERSION:=$(AST_MAJOR_VERSION).13.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=asterisk-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://downloads.asterisk.org/pub/telephony/asterisk/releases
-PKG_HASH:=8733f137b4b4e01d90bb796fa41d992e656b4cf1c28d2d7e81863a6839975702
+PKG_HASH:=e95238c355f5ef837009659e7422dcd7100ac7675b30ae8c49614ad32052d206
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/asterisk-$(PKG_VERSION)
 PKG_BUILD_DEPENDS:=libxml2/host
@@ -333,7 +333,7 @@ endef
 
 define Package/$(PKG_NAME)/install/conffile
 	$(INSTALL_DIR) $(1)/opt/etc/asterisk
-	$(INSTALL_CONF) $(PKG_INSTALL_DIR)/opt/etc/asterisk/$(2) $(1)/opt/etc/asterisk/
+	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/opt/etc/asterisk/$(2) $(1)/opt/etc/asterisk/
 endef
 
 define Package/$(PKG_NAME)/install/lib
@@ -353,7 +353,7 @@ endef
 
 define Package/$(PKG_NAME)/install/util-conffile
 	$(INSTALL_DIR) $(1)/opt/etc
-	$(INSTALL_CONF) $(PKG_INSTALL_DIR)/opt/etc/asterisk/$(2) $(1)/opt/etc
+	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/opt/etc/asterisk/$(2) $(1)/opt/etc
 endef
 
 define Package/$(PKG_NAME)/config
@@ -493,18 +493,12 @@ $(call Package/$(PKG_NAME)/install/sbin,$(1),safe_asterisk)
 $(call Package/$(PKG_NAME)/install/sbin,$(1),astgenkey)
 $(foreach m,$(AST_CFG_FILES),$(call Package/$(PKG_NAME)/install/conffile,$(1),$(m));)
 $(foreach m,$(AST_EMB_MODULES),$(call Package/$(PKG_NAME)/install/module,$(1),$(m));)
-	$(INSTALL_DIR) $(1)/opt/share/asterisk/sounds/
-#	$(INSTALL_DIR) $(1)/etc/default
-#	$(INSTALL_DATA) ./files/asterisk.default $(1)/etc/default/asterisk
 	$(INSTALL_DIR) $(1)/opt/etc/init.d
+	$(INSTALL_DIR) $(1)/opt/share/asterisk/agi-bin
+	$(INSTALL_DIR) $(1)/opt/share/asterisk/firmware/iax
+	$(INSTALL_DIR) $(1)/opt/share/asterisk/keys
+	$(INSTALL_DIR) $(1)/opt/share/asterisk/sounds
 	$(INSTALL_BIN) ./files/S31asterisk16 $(1)/opt/etc/init.d
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/asterisk $(1)/opt/share/
-	$(CP) $(PKG_INSTALL_DIR)/opt/var $(1)/opt/
-	rm -rf $(1)/opt/share/asterisk/sounds
-	rm -rf $(1)/opt/share/asterisk/moh/*.wav
-	# Entware specific: fix exec path in scripts
-	$(SED) 's,^#!.*bash,#!/opt/bin/bash,;s,^#!.*python,#!/opt/bin/python,' \
-		$(1)/opt/share/asterisk/scripts/*
 endef
 
 define Package/$(PKG_NAME)-sounds
@@ -995,7 +989,7 @@ $(eval $(call BuildAsteriskModule,res-mwi-external-ami,AMI for external MWI,AMI 
 $(eval $(call BuildAsteriskModule,res-parking,Phone Parking,Call parking resource.,+$(PKG_NAME)-bridge-holding,res_parking.conf,res_parking,,))
 $(eval $(call BuildAsteriskModule,res-phoneprov,Phone Provisioning,HTTP phone provisioning.,,phoneprov.conf,res_phoneprov,,))
 $(eval $(call BuildAsteriskModule,res-pjsip-phoneprov,PJSIP Phone Provisioning,PJSIP phone provisioning.,+$(PKG_NAME)-pjsip +$(PKG_NAME)-res-phoneprov,,res_pjsip_phoneprov_provider,,))
-$(eval $(call BuildAsteriskModule,res-pjproject,Bridge PJPROJECT to Asterisk logging,PJProject log and utility support.,+libpj +libpjlib-util +libpjmedia +libpjmedia +libpjnath +libpjsip-simple +libpjsip-ua +libpjsip +libpjsua +libpjsua2 +libsrtp2,pjproject.conf,res_pjproject,,))
+$(eval $(call BuildAsteriskModule,res-pjproject,Bridge PJPROJECT to Asterisk logging,PJProject log and utility support.,+libpj +libpjlib-util +libpjmedia +libpjmedia +libpjnath +libpjsip-simple +libpjsip-ua +libpjsip +libpjsua +libpjsua2 +libsrtp,pjproject.conf,res_pjproject,,))
 $(eval $(call BuildAsteriskModule,res-pktccops,PktcCOPS manager for MGCP,PktcCOPS manager for MGCP.,,res_pktccops.conf,res_pktccops,,))
 $(eval $(call BuildAsteriskModule,res-realtime,RealTime CLI,Realtime data lookup/rewrite.,,,res_realtime,,))
 $(eval $(call BuildAsteriskModule,res-remb-modifier,REMB modifier,REMB modifier module.,,,res_remb_modifier,,))
@@ -1008,7 +1002,7 @@ $(eval $(call BuildAsteriskModule,res-snmp,SNMP [Sub]Agent for Asterisk,SNMP age
 $(eval $(call BuildAsteriskModule,res-sorcery,Sorcery data layer,Sorcery backend modules for data access intended for using realtime as\nbackend.,,sorcery.conf,res_sorcery_astdb res_sorcery_config res_sorcery_memory res_sorcery_realtime,,))
 $(eval $(call BuildAsteriskModule,res-sorcery-memory-cache,Sorcery memory cache object wizard,Sorcery memory cache object wizard.,,,res_sorcery_memory_cache,,))
 $(eval $(call BuildAsteriskModule,res-speech,Speech Recognition API,Generic speech recognition API.,,,res_speech,,))
-$(eval $(call BuildAsteriskModule,res-srtp,SRTP Support,Secure RTP.,+libsrtp2,,res_srtp,,))
+$(eval $(call BuildAsteriskModule,res-srtp,SRTP Support,Secure RTP.,+libsrtp,,res_srtp,,))
 $(eval $(call BuildAsteriskModule,res-stasis,Stasis application,Stasis application support.,,,res_stasis,,))
 $(eval $(call BuildAsteriskModule,res-stasis-answer,Stasis application answer,Stasis application answer support.,+$(PKG_NAME)-res-stasis,,res_stasis_answer,,))
 $(eval $(call BuildAsteriskModule,res-stasis-device-state,Stasis application device state,Stasis application device state support.,+$(PKG_NAME)-res-stasis,,res_stasis_device_state,,))
