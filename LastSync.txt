@@ -1,8 +1,8 @@
-commit 302e905c55a0ade705fd826f4417c8f065b1469e (HEAD -> master, origin/master, origin/HEAD)
-Merge: c8931b6 94df06b
+commit 26245e81b12d71830aab54da8898e4b229587323 (HEAD -> master, origin/master, origin/HEAD)
+Merge: a419384 90281b8
 Author: Jiri Slachta <jiri@slachta.eu>
-Date:   Mon Nov 23 22:02:10 2020 +0100
+Date:   Wed Feb 24 23:37:23 2021 +0100
 
-    Merge pull request #582 from neheb/miax
+    Merge pull request #602 from neheb/a
     
-    miax: fix compilation errors under uClibc-ng and musl
+    asterisk: fix compilation with 1.2.x
