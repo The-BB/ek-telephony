@@ -1,6 +1,6 @@
 --- a/chan_dongle.c
 +++ b/chan_dongle.c
-@@ -116,7 +116,7 @@ static int lock_build(const char * devna
+@@ -119,7 +119,7 @@ static int lock_build(const char * devna
  		basename = devname;
  
  	/* NOTE: use system system wide lock directory */
