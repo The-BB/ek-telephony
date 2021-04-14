@@ -56,19 +56,20 @@ CONFIGURE_ARGS += \
 	--disable-minisize
 
 define Build/InstallDev
-	$(INSTALL_DIR) $(1)/usr/include
-	$(CP) $(PKG_INSTALL_DIR)/usr/include/osip{,parser}2 $(1)/usr/include/
+	$(INSTALL_DIR) $(1)/opt/include
+	$(CP) $(PKG_INSTALL_DIR)/opt/include/osip{,parser}2 $(1)/opt/include/
 
-	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libosip{,parser}2.{a,so*} $(1)/usr/lib/
+	$(INSTALL_DIR) $(1)/opt/lib
+	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libosip{,parser}2.{a,so*} $(1)/opt/lib/
 
-	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/pkgconfig/libosip2.pc $(1)/usr/lib/pkgconfig/
+	$(INSTALL_DIR) $(1)/opt/lib/pkgconfig
+	$(CP) $(PKG_INSTALL_DIR)/opt/lib/pkgconfig/libosip2.pc $(1)/opt/lib/pkgconfig/
 endef
 
 define Package/libosip2/install
-	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libosip{,parser}2.so.$(ABI_VERSION)* $(1)/usr/lib/
+	$(INSTALL_DIR) $(1)/opt/lib
+#	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libosip{,parser}2.so.$(ABI_VERSION)* $(1)/opt/lib/
+	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libosip{,parser}2.so* $(1)/opt/lib/
 endef
 
 $(eval $(call BuildPackage,libosip2))
