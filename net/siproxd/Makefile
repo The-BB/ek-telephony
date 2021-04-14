@@ -44,10 +44,6 @@ define Package/siproxd/description
  Siproxd is a proxy/masquerading daemon for the SIP protocol. Refer to https://openwrt.org/docs/guide-user/services/voip/siproxd for configuration details and examples.
 endef
 
-define Package/siproxd/conffiles
-/etc/config/siproxd
-endef
-
 define Package/siproxd/config
 	config SIPROXD_MAX_CLIENTS
 		int "Max supported clients"
@@ -59,7 +55,7 @@ define Package/siproxd/config
 endef
 
 CONFIGURE_ARGS+= \
-	--with-libosip-prefix="$(STAGING_DIR)/usr" \
+	--with-libosip-prefix="$(STAGING_DIR)/opt" \
 	--without-included-ltdl \
 	--disable-doc
 
@@ -80,12 +76,8 @@ define Build/Configure
 endef
 
 define Package/siproxd/install
-	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/siproxd $(1)/usr/sbin
-	$(INSTALL_DIR) $(1)/etc/config
-	$(INSTALL_CONF) ./files/siproxd.config $(1)/etc/config/siproxd
-	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_BIN) ./files/siproxd.init $(1)/etc/init.d/siproxd
+	$(INSTALL_DIR) $(1)/opt/sbin
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/sbin/siproxd $(1)/opt/sbin
 endef
 
 define BuildPlugin
@@ -96,9 +88,9 @@ define BuildPlugin
   endef
 
   define Package/siproxd-mod-$(subst _,-,$(1))/install
-	$(INSTALL_DIR) $$(1)/usr/lib/siproxd
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/siproxd/plugin_$(1).so \
-		$$(1)/usr/lib/siproxd
+	$(INSTALL_DIR) $$(1)/opt/lib/siproxd
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/lib/siproxd/plugin_$(1).so \
+		$$(1)/opt/lib/siproxd
   endef
 
   $$(eval $$(call BuildPackage,siproxd-mod-$(subst _,-,$(1))))
