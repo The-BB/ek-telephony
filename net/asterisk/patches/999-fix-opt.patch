@@ -252,7 +252,7 @@
  			<ref type="application">TestServer</ref>
 --- a/apps/app_voicemail.c
 +++ b/apps/app_voicemail.c
-@@ -514,7 +514,7 @@ static AST_LIST_HEAD_STATIC(vmstates, vm
+@@ -518,7 +518,7 @@ static AST_LIST_HEAD_STATIC(vmstates, vm
  
  /* Default mail command to mail voicemail. Change it with the
   * mailcmd= command in voicemail.conf */
@@ -261,7 +261,7 @@
  
  #define INTRO "vm-intro"
  
-@@ -2610,7 +2610,7 @@ static int imap_store_file(const char *d
+@@ -2616,7 +2616,7 @@ static int imap_store_file(const char *d
  	char mailbox[256];
  	char *stringp;
  	FILE *p = NULL;
@@ -270,7 +270,7 @@
  	long len;
  	void *buf;
  	int tempcopy = 0;
-@@ -5514,7 +5514,7 @@ static int sendmail(char *srcemail,
+@@ -5528,7 +5528,7 @@ static int sendmail(char *srcemail,
  		const char *msg_id)
  {
  	FILE *p = NULL;
@@ -279,7 +279,7 @@
  	char tmp2[256];
  	char *stringp;
  
-@@ -5553,7 +5553,7 @@ static int sendpage(char *srcemail, char
+@@ -5567,7 +5567,7 @@ static int sendpage(char *srcemail, char
  	char host[MAXHOSTNAMELEN] = "";
  	char who[256];
  	char dur[PATH_MAX];
@@ -288,7 +288,7 @@
  	char tmp2[PATH_MAX];
  	struct ast_tm tm;
  	FILE *p;
-@@ -14820,7 +14820,7 @@ AST_TEST_DEFINE(test_voicemail_load_conf
+@@ -14842,7 +14842,7 @@ AST_TEST_DEFINE(test_voicemail_load_conf
  	int res = AST_TEST_PASS;
  	struct ast_vm_user *vmu;
  	struct ast_config *cfg;
@@ -493,33 +493,6 @@
  		if (safe_fd < 0 || link(safe_logfile, logfile_pathname) || unlink(safe_logfile) || !(jb->logfile = fdopen(safe_fd, "w+b"))) {
 --- a/main/asterisk.c
 +++ b/main/asterisk.c
-@@ -1195,7 +1195,7 @@ int ast_safe_system(const char *s)
- 	pid_t pid = safe_exec_prep(0);
- 
- 	if (pid == 0) {
--		execl("/bin/sh", "/bin/sh", "-c", s, (char *) NULL);
-+		execl("/opt/bin/sh", "/opt/bin/sh", "-c", s, (char *) NULL);
- 		_exit(1);
- 		/* noreturn from _exit */
- 	}
-@@ -2254,7 +2254,7 @@ static void consolehandler(const char *s
- 		if (s[1])
- 			ast_safe_system(s+1);
- 		else
--			ast_safe_system(getenv("SHELL") ? getenv("SHELL") : "/bin/sh");
-+			ast_safe_system(getenv("SHELL") ? getenv("SHELL") : "/opt/bin/sh");
- 	} else
- 		ast_cli_command(STDOUT_FILENO, s);
- }
-@@ -2276,7 +2276,7 @@ static int remoteconsolehandler(const ch
- 		if (s[1])
- 			ast_safe_system(s+1);
- 		else
--			ast_safe_system(getenv("SHELL") ? getenv("SHELL") : "/bin/sh");
-+			ast_safe_system(getenv("SHELL") ? getenv("SHELL") : "/opt/bin/sh");
- 		ret = 1;
- 	} else if ((strncasecmp(s, "quit", 4) == 0 || strncasecmp(s, "exit", 4) == 0) &&
- 	    (s[4] == '\0' || isspace(s[4]))) {
 @@ -3319,7 +3319,7 @@ static int show_cli_help(void)
  	printf("   -r              Connect to Asterisk on this machine\n");
  	printf("   -R              Same as -r, except attempt to reconnect if disconnected\n");
@@ -529,17 +502,6 @@
  	printf("                   belong after they are done\n");
  	printf("   -T              Display the time in [Mmm dd hh:mm:ss] format for each line\n");
  	printf("                   of output to the CLI\n");
---- a/main/bucket.c
-+++ b/main/bucket.c
-@@ -899,7 +899,7 @@ int ast_bucket_file_temporary_create(str
- {
- 	int fd;
- 
--	ast_copy_string(file->path, "/tmp/bucket-XXXXXX", sizeof(file->path));
-+	ast_copy_string(file->path, "/opt/tmp/bucket-XXXXXX", sizeof(file->path));
- 
- 	fd = mkstemp(file->path);
- 	if (fd < 0) {
 --- a/main/config.c
 +++ b/main/config.c
 @@ -1925,7 +1925,7 @@ static int process_text_line(struct ast_
@@ -744,7 +706,7 @@
  			execv(argv[0], argv);
  		} else {
 -			/* Default install is /usr/local/bin */
-+			/* Default install is /opt/usr/local/bin */
++			/* Default install is /opt/bin */
  			execv(LOCAL_MPG_123, argv);
 -			/* Many places have it in /usr/bin */
 +			/* Many places have it in /opt/bin */
@@ -951,15 +913,6 @@
  	(void)sigprocmask(SIG_BLOCK, &set, &oset);
 --- a/utils/extconf.c
 +++ b/utils/extconf.c
-@@ -850,7 +850,7 @@ int ast_safe_system(const char *s)
- 		for (x = STDERR_FILENO + 1; x < 4096; x++)
- 			close(x);
- #endif
--		execl("/bin/sh", "/bin/sh", "-c", s, (char *) NULL);
-+		execl("/opt/bin/sh", "/opt/bin/sh", "-c", s, (char *) NULL);
- 		_exit(1);
- 	} else if (pid > 0) {
- 		for(;;) {
 @@ -922,7 +922,7 @@ struct ast_config_include {
  	char *include_location_file;     /*!< file name in which the include occurs */
  	int  include_location_lineno;    /*!< lineno where include occurred */
@@ -1002,7 +955,7 @@
        *mttxchannel = 0,
 --- a/Makefile
 +++ b/Makefile
-@@ -146,9 +146,9 @@ ASTCONFPATH=$(ASTETCDIR)/asterisk.conf
+@@ -147,9 +147,9 @@ ASTCONFPATH=$(ASTETCDIR)/asterisk.conf
  AGI_DIR=$(ASTDATADIR)/agi-bin
  
  # If you use Apache, you may determine by a grep 'DocumentRoot' of your httpd.conf file
@@ -1014,7 +967,7 @@
  
  # If your platform's linker expects a prefix on symbols generated from compiling C
  # source files, set LINKER_SYMBOL_PREFIX to that value. On some systems, exported symbols
-@@ -162,7 +162,7 @@ LINKER_SYMBOL_PREFIX=
+@@ -163,7 +163,7 @@ LINKER_SYMBOL_PREFIX=
  #_ASTCFLAGS+=-DOLD_DSP_ROUTINES
  
  # Default install directory for DAHDI hooks.
