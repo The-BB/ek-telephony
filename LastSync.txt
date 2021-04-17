@@ -1,8 +1,8 @@
-commit 26245e81b12d71830aab54da8898e4b229587323 (HEAD -> master, origin/master, origin/HEAD)
-Merge: a419384 90281b8
-Author: Jiri Slachta <jiri@slachta.eu>
-Date:   Wed Feb 24 23:37:23 2021 +0100
+commit cfd264f224e3cf4bf6124c23ee4a8444a918fe91 (HEAD -> master, origin/master, origin/HEAD)
+Merge: cda90c0 34e26f1
+Author: micmac1 <sebastian_ml@gmx.net>
+Date:   Thu Apr 8 22:01:38 2021 +0200
 
-    Merge pull request #602 from neheb/a
+    Merge pull request #634 from micmac1/fs-modmake-patch
     
-    asterisk: fix compilation with 1.2.x
+    freeswitch: fix 003-modmake-fix.patch
