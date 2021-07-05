@@ -1,8 +1,8 @@
-commit cfd264f224e3cf4bf6124c23ee4a8444a918fe91 (HEAD -> master, origin/master, origin/HEAD)
-Merge: cda90c0 34e26f1
-Author: micmac1 <sebastian_ml@gmx.net>
-Date:   Thu Apr 8 22:01:38 2021 +0200
+commit 20abe8c354c87761fdd73e1c6e0fe8db0953c560 (HEAD -> master, origin/master, origin/HEAD)
+Merge: e27d3ea 621352a
+Author: Jiri Slachta <jiri@slachta.eu>
+Date:   Fri Jun 11 14:58:19 2021 +0200
 
-    Merge pull request #634 from micmac1/fs-modmake-patch
+    Merge pull request #649 from robho/yate_increase_sip_msg_size
     
-    freeswitch: fix 003-modmake-fix.patch
+    yate: increase max acceptable size of incoming SIP messages
