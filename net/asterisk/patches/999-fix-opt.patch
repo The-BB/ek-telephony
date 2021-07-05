@@ -493,7 +493,7 @@
  		if (safe_fd < 0 || link(safe_logfile, logfile_pathname) || unlink(safe_logfile) || !(jb->logfile = fdopen(safe_fd, "w+b"))) {
 --- a/main/asterisk.c
 +++ b/main/asterisk.c
-@@ -3319,7 +3319,7 @@ static int show_cli_help(void)
+@@ -3321,7 +3321,7 @@ static int show_cli_help(void)
  	printf("   -r              Connect to Asterisk on this machine\n");
  	printf("   -R              Same as -r, except attempt to reconnect if disconnected\n");
  	printf("   -s <socket>     Connect to Asterisk via socket <socket> (only valid with -r)\n");
@@ -666,7 +666,7 @@
  				; directory, specified in asterisk.conf
 --- a/res/res_config_pgsql.c
 +++ b/res/res_config_pgsql.c
-@@ -1510,8 +1510,8 @@ static int parse_config(int is_reload)
+@@ -1508,8 +1508,8 @@ static int parse_config(int is_reload)
  		/* No socket needed */
  	} else if (!(s = ast_variable_retrieve(config, "general", "dbsock"))) {
  		ast_log(LOG_WARNING,
