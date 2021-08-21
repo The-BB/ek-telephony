@@ -1,8 +1,8 @@
-commit 20abe8c354c87761fdd73e1c6e0fe8db0953c560 (HEAD -> master, origin/master, origin/HEAD)
-Merge: e27d3ea 621352a
-Author: Jiri Slachta <jiri@slachta.eu>
-Date:   Fri Jun 11 14:58:19 2021 +0200
+commit 2feac1069fbaf58a110c741bcba4f9e092ec2704 (HEAD -> master, origin/master, origin/HEAD)
+Merge: 6f004e7 0b942da
+Author: micmac1 <sebastian_ml@gmx.net>
+Date:   Thu Aug 19 21:25:39 2021 +0200
 
-    Merge pull request #649 from robho/yate_increase_sip_msg_size
+    Merge pull request #671 from micmac1/fs-stop
     
-    yate: increase max acceptable size of incoming SIP messages
+    freeswitch: set stop level
