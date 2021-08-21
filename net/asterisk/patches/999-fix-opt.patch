@@ -252,7 +252,7 @@
  			<ref type="application">TestServer</ref>
 --- a/apps/app_voicemail.c
 +++ b/apps/app_voicemail.c
-@@ -518,7 +518,7 @@ static AST_LIST_HEAD_STATIC(vmstates, vm
+@@ -523,7 +523,7 @@ static AST_LIST_HEAD_STATIC(vmstates, vm
  
  /* Default mail command to mail voicemail. Change it with the
   * mailcmd= command in voicemail.conf */
@@ -261,7 +261,7 @@
  
  #define INTRO "vm-intro"
  
-@@ -2616,7 +2616,7 @@ static int imap_store_file(const char *d
+@@ -2624,7 +2624,7 @@ static int imap_store_file(const char *d
  	char mailbox[256];
  	char *stringp;
  	FILE *p = NULL;
@@ -270,7 +270,7 @@
  	long len;
  	void *buf;
  	int tempcopy = 0;
-@@ -5528,7 +5528,7 @@ static int sendmail(char *srcemail,
+@@ -5536,7 +5536,7 @@ static int sendmail(char *srcemail,
  		const char *msg_id)
  {
  	FILE *p = NULL;
@@ -279,7 +279,7 @@
  	char tmp2[256];
  	char *stringp;
  
-@@ -5567,7 +5567,7 @@ static int sendpage(char *srcemail, char
+@@ -5575,7 +5575,7 @@ static int sendpage(char *srcemail, char
  	char host[MAXHOSTNAMELEN] = "";
  	char who[256];
  	char dur[PATH_MAX];
@@ -288,7 +288,7 @@
  	char tmp2[PATH_MAX];
  	struct ast_tm tm;
  	FILE *p;
-@@ -14842,7 +14842,7 @@ AST_TEST_DEFINE(test_voicemail_load_conf
+@@ -14860,7 +14860,7 @@ AST_TEST_DEFINE(test_voicemail_load_conf
  	int res = AST_TEST_PASS;
  	struct ast_vm_user *vmu;
  	struct ast_config *cfg;
