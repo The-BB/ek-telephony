@@ -5,13 +5,13 @@
  	if (!(s = ast_variable_retrieve(config, category, "dbsock"))) {
  		if (ast_strlen_zero(conn->host)) {
 -			char *paths[3] = { "/tmp/mysql.sock", "/var/lib/mysql/mysql.sock", "/var/run/mysqld/mysqld.sock" };
-+			char *paths[3] = { "/opt/tmp/mysql.sock", "/opt/var/lib/mysql/mysql.sock", "/opt/var/run/mysqld.sock" };
++			char *paths[3] = { "/opt/tmp/mysql.sock", "/opt/var/lib/mysql/mysql.sock", "/opt/var/run/mysqld/mysqld.sock" };
  			struct stat st;
  			int i;
  			for (i = 0; i < 3; i++) {
 --- a/apps/app_dahdiras.c
 +++ b/apps/app_dahdiras.c
-@@ -70,7 +70,7 @@
+@@ -72,7 +72,7 @@
  static const char app[] = "DAHDIRAS";
  
  #define PPP_MAX_ARGS	32
@@ -33,7 +33,7 @@
  	data = ast_strdupa(vdata);
 --- a/apps/app_ices.c
 +++ b/apps/app_ices.c
-@@ -67,8 +67,8 @@
+@@ -69,8 +69,8 @@
  
   ***/
  
@@ -44,7 +44,7 @@
  
  static char *app = "ICES";
  
-@@ -88,8 +88,8 @@ static int icesencode(char *filename, in
+@@ -90,8 +90,8 @@ static int icesencode(char *filename, in
  	dup2(fd, STDIN_FILENO);
  	ast_close_fds_above_n(STDERR_FILENO);
  
@@ -130,47 +130,47 @@
  	    snprintf(buffer_size_str, 8, "%u", (int) 0.5*2*sampling_rate/1000); // 0.5 seconds for a live stream
 -		/* Most commonly installed in /usr/local/bin */
 +		/* Most commonly installed in /opt/bin */
- 	    execl(LOCAL_MPG_123, "mpg123", "-q", "-s", "-b", buffer_size_str, "-f", "8192", "--mono", "-r", sampling_rate_str, "-@", filename, (char *)NULL);
+ 	    execl(LOCAL_MPG_123, "mpg123", "-e", "s16", "-q", "-s", "-b", buffer_size_str, "-f", "8192", "--mono", "-r", sampling_rate_str, "-@", filename, (char *)NULL);
 -		/* But many places has it in /usr/bin */
 +		/* But many places has it in /opt/bin */
- 	    execl(MPG_123, "mpg123", "-q", "-s", "-b", buffer_size_str, "-f", "8192", "--mono", "-r", sampling_rate_str, "-@", filename, (char *)NULL);
+ 	    execl(MPG_123, "mpg123", "-e", "s16", "-q", "-s", "-b", buffer_size_str, "-f", "8192", "--mono", "-r", sampling_rate_str, "-@", filename, (char *)NULL);
  		/* As a last-ditch effort, try to use PATH */
- 	    execlp("mpg123", "mpg123", "-q", "-s", "-b", buffer_size_str, "-f", "8192", "--mono", "-r", sampling_rate_str, "-@", filename, (char *)NULL);
+ 	    execlp("mpg123", "mpg123", "-e", "s16", "-q", "-s", "-b", buffer_size_str, "-f", "8192", "--mono", "-r", sampling_rate_str, "-@", filename, (char *)NULL);
 @@ -109,25 +109,25 @@ static int mp3play(const char *filename,
  	else if (!strncasecmp(filename, "http://", 7)) {
  	    char buffer_size_str[8];
  	    snprintf(buffer_size_str, 8, "%u", 6*2*sampling_rate/1000); // 6 seconds for a remote MP3 file
 -		/* Most commonly installed in /usr/local/bin */
 +		/* Most commonly installed in /opt/bin */
- 	    execl(LOCAL_MPG_123, "mpg123", "-q", "-s", "-b", buffer_size_str, "-f", "8192", "--mono", "-r", sampling_rate_str, filename, (char *)NULL);
+ 	    execl(LOCAL_MPG_123, "mpg123", "-e", "s16", "-q", "-s", "-b", buffer_size_str, "-f", "8192", "--mono", "-r", sampling_rate_str, filename, (char *)NULL);
 -		/* But many places has it in /usr/bin */
 +		/* But many places has it in /opt/bin */
- 	    execl(MPG_123, "mpg123", "-q", "-s", "-b", buffer_size_str, "-f", "8192", "--mono", "-r", sampling_rate_str, filename, (char *)NULL);
+ 	    execl(MPG_123, "mpg123", "-e", "s16", "-q", "-s", "-b", buffer_size_str, "-f", "8192", "--mono", "-r", sampling_rate_str, filename, (char *)NULL);
  		/* As a last-ditch effort, try to use PATH */
- 	    execlp("mpg123", "mpg123", "-q", "-s", "-b", buffer_size_str, "-f", "8192", "--mono", "-r", sampling_rate_str, filename, (char *)NULL);
+ 	    execlp("mpg123", "mpg123", "-e", "s16", "-q", "-s", "-b", buffer_size_str, "-f", "8192", "--mono", "-r", sampling_rate_str, filename, (char *)NULL);
  	}
  	else if (strstr(filename, ".m3u")) {
 -		/* Most commonly installed in /usr/local/bin */
 +		/* Most commonly installed in /opt/bin */
- 	    execl(LOCAL_MPG_123, "mpg123", "-q", "-z", "-s", "-f", "8192", "--mono", "-r", sampling_rate_str, "-@", filename, (char *)NULL);
+ 	    execl(LOCAL_MPG_123, "mpg123", "-e", "s16", "-q", "-z", "-s", "-f", "8192", "--mono", "-r", sampling_rate_str, "-@", filename, (char *)NULL);
 -		/* But many places has it in /usr/bin */
 +		/* But many places has it in /opt/bin */
- 	    execl(MPG_123, "mpg123", "-q", "-z", "-s", "-f", "8192", "--mono", "-r", sampling_rate_str, "-@", filename, (char *)NULL);
+ 	    execl(MPG_123, "mpg123", "-e", "s16", "-q", "-z", "-s", "-f", "8192", "--mono", "-r", sampling_rate_str, "-@", filename, (char *)NULL);
  		/* As a last-ditch effort, try to use PATH */
- 	    execlp("mpg123", "mpg123", "-q", "-z", "-s",  "-f", "8192", "--mono", "-r", sampling_rate_str, "-@", filename, (char *)NULL);
+ 	    execlp("mpg123", "mpg123", "-e", "s16", "-q", "-z", "-s",  "-f", "8192", "--mono", "-r", sampling_rate_str, "-@", filename, (char *)NULL);
  	}
  	else {
 -		/* Most commonly installed in /usr/local/bin */
 +		/* Most commonly installed in /opt/bin */
- 	    execl(MPG_123, "mpg123", "-q", "-s", "-f", "8192", "--mono", "-r", sampling_rate_str, filename, (char *)NULL);
+ 	    execl(MPG_123, "mpg123", "-e", "s16", "-q", "-s", "-f", "8192", "--mono", "-r", sampling_rate_str, filename, (char *)NULL);
 -		/* But many places has it in /usr/bin */
 +		/* But many places has it in /opt/bin */
- 	    execl(LOCAL_MPG_123, "mpg123", "-q", "-s", "-f", "8192", "--mono", "-r", sampling_rate_str, filename, (char *)NULL);
+ 	    execl(LOCAL_MPG_123, "mpg123", "-e", "s16", "-q", "-s", "-f", "8192", "--mono", "-r", sampling_rate_str, filename, (char *)NULL);
  		/* As a last-ditch effort, try to use PATH */
- 	    execlp("mpg123", "mpg123", "-q", "-s", "-f", "8192", "--mono", "-r", sampling_rate_str, filename, (char *)NULL);
+ 	    execlp("mpg123", "mpg123", "-e", "s16", "-q", "-s", "-f", "8192", "--mono", "-r", sampling_rate_str, filename, (char *)NULL);
 --- a/apps/app_nbscat.c
 +++ b/apps/app_nbscat.c
-@@ -59,8 +59,8 @@
+@@ -61,8 +61,8 @@
  	</application>
   ***/
  
@@ -181,7 +181,7 @@
  
  #ifndef AF_LOCAL
  #define AF_LOCAL AF_UNIX
-@@ -86,7 +86,7 @@ static int NBScatplay(int fd)
+@@ -88,7 +88,7 @@ static int NBScatplay(int fd)
  
  	dup2(fd, STDOUT_FILENO);
  	ast_close_fds_above_n(STDERR_FILENO);
@@ -252,7 +252,7 @@
  			<ref type="application">TestServer</ref>
 --- a/apps/app_voicemail.c
 +++ b/apps/app_voicemail.c
-@@ -523,7 +523,7 @@ static AST_LIST_HEAD_STATIC(vmstates, vm
+@@ -528,7 +528,7 @@ static AST_LIST_HEAD_STATIC(vmstates, vm
  
  /* Default mail command to mail voicemail. Change it with the
   * mailcmd= command in voicemail.conf */
@@ -261,7 +261,7 @@
  
  #define INTRO "vm-intro"
  
-@@ -2624,7 +2624,7 @@ static int imap_store_file(const char *d
+@@ -2631,7 +2631,7 @@ static int imap_store_file(const char *d
  	char mailbox[256];
  	char *stringp;
  	FILE *p = NULL;
@@ -270,7 +270,7 @@
  	long len;
  	void *buf;
  	int tempcopy = 0;
-@@ -5536,7 +5536,7 @@ static int sendmail(char *srcemail,
+@@ -5543,7 +5543,7 @@ static int sendmail(char *srcemail,
  		const char *msg_id)
  {
  	FILE *p = NULL;
@@ -279,7 +279,7 @@
  	char tmp2[256];
  	char *stringp;
  
-@@ -5575,7 +5575,7 @@ static int sendpage(char *srcemail, char
+@@ -5582,7 +5582,7 @@ static int sendpage(char *srcemail, char
  	char host[MAXHOSTNAMELEN] = "";
  	char who[256];
  	char dur[PATH_MAX];
@@ -288,7 +288,7 @@
  	char tmp2[PATH_MAX];
  	struct ast_tm tm;
  	FILE *p;
-@@ -14860,7 +14860,7 @@ AST_TEST_DEFINE(test_voicemail_load_conf
+@@ -14873,7 +14873,7 @@ AST_TEST_DEFINE(test_voicemail_load_conf
  	int res = AST_TEST_PASS;
  	struct ast_vm_user *vmu;
  	struct ast_config *cfg;
@@ -327,7 +327,7 @@
  static struct ast_flags global_flags = { RADIUS_FLAG_USEGMTIME | RADIUS_FLAG_LOGUNIQUEID | RADIUS_FLAG_LOGUSERFIELD };
 --- a/channels/chan_alsa.c
 +++ b/channels/chan_alsa.c
-@@ -1017,7 +1017,7 @@ static int load_module(void)
+@@ -1019,7 +1019,7 @@ static int load_module(void)
  
  	if (soundcard_init() < 0) {
  		ast_verb(2, "No sound card detected -- console channel will be unavailable\n");
@@ -338,7 +338,7 @@
  		return AST_MODULE_LOAD_DECLINE;
 --- a/channels/chan_dahdi.c
 +++ b/channels/chan_dahdi.c
-@@ -12013,7 +12013,7 @@ static struct r2link_entry *dahdi_r2_get
+@@ -12017,7 +12017,7 @@ static struct r2link_entry *dahdi_r2_get
  
  static int dahdi_r2_set_context(struct dahdi_mfcr2 *r2_link, const struct dahdi_chan_conf *conf)
  {
@@ -349,7 +349,7 @@
  	int snres = 0;
 --- a/channels/chan_oss.c
 +++ b/channels/chan_oss.c
-@@ -1418,7 +1418,7 @@ openit:
+@@ -1420,7 +1420,7 @@ openit:
  #ifdef TRYOPEN
  	if (setformat(o, O_RDWR) < 0) {	/* open device */
  		ast_verb(1, "Device %s not detected\n", ctg);
@@ -408,7 +408,7 @@
  
 --- a/funcs/func_env.c
 +++ b/funcs/func_env.c
-@@ -131,45 +131,45 @@
+@@ -132,45 +132,45 @@
  			<para/>
  			<para>Read mode (byte):</para>
  			<para>    ;reads the entire content of the file.</para>
@@ -679,7 +679,7 @@
  	}
 --- a/res/res_monitor.c
 +++ b/res/res_monitor.c
-@@ -110,7 +110,7 @@
+@@ -112,7 +112,7 @@
  			<para>Used to start monitoring a channel. The channel's input and output
  			voice packets are logged to files until the channel hangs up or
  			monitoring is stopped by the StopMonitor application.</para>
@@ -883,7 +883,7 @@
  	return 0;
 --- a/utils/conf2ael.c
 +++ b/utils/conf2ael.c
-@@ -56,7 +56,7 @@
+@@ -58,7 +58,7 @@
  #include "asterisk/pval.h"
  #include "asterisk/extconf.h"
  
@@ -933,7 +933,7 @@
  
 --- a/utils/muted.c
 +++ b/utils/muted.c
-@@ -72,7 +72,7 @@
+@@ -74,7 +74,7 @@
  
  #define ast_strlen_zero(a)	(!(*(a)))
  
