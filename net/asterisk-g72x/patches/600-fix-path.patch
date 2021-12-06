@@ -9,18 +9,16 @@
          ;;
  esac
  
-@@ -36,9 +36,7 @@ esac
- if test "${prefix}" = "NONE"; then
+@@ -37,7 +37,7 @@ if test "${prefix}" = "NONE"; then
      prefix="${ac_default_prefix}"
  fi
--if test "${prefix}" != "/usr"; then
+ if test "${prefix}" != "/usr"; then
 -    CPPFLAGS="$CPPFLAGS -I${prefix}/include"
--fi
-+
++    CPPFLAGS="$CPPFLAGS"
+ fi
  #echo new prefix: "${prefix}"
  
- ASTERISK_VERSION="160";
-@@ -81,7 +79,7 @@ AC_ARG_WITH(g729nofp,
+@@ -81,7 +81,7 @@ AC_ARG_WITH(g729nofp,
  
  AC_ARG_WITH(bcg729,
      AS_HELP_STRING([--with-bcg729], [Build against Bcg729 library; without G.723.1]),
