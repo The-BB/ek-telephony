@@ -10,7 +10,7 @@ USE_PROCD=1
 NAME=asterisk
 COMMAND=/usr/sbin/$NAME
 
-LOGGER="/usr/bin/logger -p user.err -s -t $NAME --"
+LOGGER="/usr/bin/logger -p daemon.err -s -t $NAME --"
 
 start_service() {
 
@@ -30,7 +30,7 @@ start_service() {
   fi
 
   config_get_bool log_stderr general log_stderr 1
-  config_get_bool log_stdout general log_stdout 1
+  config_get_bool log_stdout general log_stdout 0
 
   config_get options general options
 
@@ -60,4 +60,8 @@ start_service() {
   procd_set_param stdout $log_stdout
   procd_close_instance
 
+}
+
+reload_service() {
+  procd_send_signal $NAME
 }
