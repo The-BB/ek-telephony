@@ -1,8 +1,8 @@
-commit 24acd46d2a42802d4aba7e1d78f29242543bf414 (HEAD -> master, origin/master, origin/HEAD)
-Merge: ced4ff2 fb0c2cf
+commit f129efb03555303a452c031abdf357183901011b (HEAD -> master, origin/master, origin/HEAD)
+Merge: f50096a 4e30b64
 Author: Jiri Slachta <jiri@slachta.eu>
-Date:   Thu Mar 24 08:30:51 2022 +0100
+Date:   Sat Jul 16 23:39:02 2022 +0200
 
-    Merge pull request #739 from pprindeville/issue#738
+    Merge pull request #775 from micmac1/chan-dongle-iconv-update
     
-    asterisk: don't send stdout to syslog by default
+    asterisk-chan-dongle: adapt BUILD_NLS handling
