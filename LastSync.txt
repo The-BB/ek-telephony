@@ -1,8 +1,8 @@
-commit f129efb03555303a452c031abdf357183901011b (HEAD -> master, origin/master, origin/HEAD)
-Merge: f50096a 4e30b64
-Author: Jiri Slachta <jiri@slachta.eu>
-Date:   Sat Jul 16 23:39:02 2022 +0200
+commit ed951ea624360bc46f7324c51bcbfd7860a1aa73 (HEAD -> master, origin/master, origin/HEAD)
+Merge: 87a78e0 e024681
+Author: micmac1 <sebastian_ml@gmx.net>
+Date:   Sat Nov 19 08:40:33 2022 +0100
 
-    Merge pull request #775 from micmac1/chan-dongle-iconv-update
+    Merge pull request #790 from micmac1/init-return
     
-    asterisk-chan-dongle: adapt BUILD_NLS handling
+    Treewide: Use return in init scripts instead of exit
