@@ -52,14 +52,11 @@ define Package/coturn
 	  +COTURN_ENABLE_POSTGRESQL:libpq \
 	  +COTURN_ENABLE_REDIS:libhiredis \
 	  +COTURN_ENABLE_SQLITE:libsqlite3
-  FILE_MODES:=/etc/turnserver:turnserver:turnserver:0750
+#  FILE_MODES:=/etc/turnserver:turnserver:turnserver:0750
 endef
 
 define Package/coturn/conffiles
-/etc/config/turnserver
-/etc/init.d/turnserver
-/etc/turnserver.conf
-/etc/turnserver
+/opt/etc/turnserver
 endef
 
 define Package/coturn/config
@@ -101,32 +98,40 @@ endef
 
 define Package/coturn/install
 	$(INSTALL_DIR) \
-		$(1)/etc/{config,init.d,turnserver} $(1)/usr/{bin,share/coturn}
-	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/etc/turnserver.conf.default \
-		$(1)/etc/turnserver.conf
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/turn* $(1)/usr/bin
-	$(INSTALL_BIN) ./files/turnserver.init \
-		$(1)/etc/init.d/turnserver
-	$(INSTALL_CONF) ./files/turnserver.conf \
-		$(1)/etc/config/turnserver
+		$(1)/opt/etc/{init.d,turnserver} $(1)/opt/{bin,share/coturn}
+	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/opt/etc/turnserver.conf.default \
+		$(1)/opt/etc/turnserver/turnserver.conf
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/turn* $(1)/opt/bin
+	$(INSTALL_BIN) ./files/S90turnserver \
+		$(1)/opt/etc/init.d
+#	$(INSTALL_CONF) ./files/turnserver.conf \
+#		$(1)/etc/config/turnserver
 ifneq ($(CONFIG_COTURN_ENABLE_MYSQL)$(CONFIG_COTURN_ENABLE_POSTGRESQL)$(CONFIG_COTURN_ENABLE_SQLITE),)
 	$(INSTALL_DATA) \
-		$(PKG_INSTALL_DIR)/usr/share/coturn/{schema,testsqldbsetup}.sql \
-		$(1)/usr/share/coturn
+		$(PKG_INSTALL_DIR)/opt/share/coturn/{schema,testsqldbsetup}.sql \
+		$(1)/opt/share/coturn
+  ifeq ($(CONFIG_COTURN_ENABLE_SQLITE),y)
+	$(INSTALL_DIR) $(1)/opt/var/lib/turn
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/examples/var/db/turndb \
+		$(1)/opt/var/lib/turn
+  endif
 endif
 ifneq ($(CONFIG_COTURN_ENABLE_REDIS),)
 	$(INSTALL_DATA) \
-		$(PKG_INSTALL_DIR)/usr/share/coturn/schema.{stats,userdb}.redis \
-		$(1)/usr/share/coturn
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/share/coturn/testredisdbsetup.sh \
-		$(1)/usr/share/coturn
+		$(PKG_INSTALL_DIR)/opt/share/coturn/schema.{stats,userdb}.redis \
+		$(1)/opt/share/coturn
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/share/coturn/testredisdbsetup.sh \
+		$(1)/opt/share/coturn
 endif
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/examples/ca/turn_server_*.pem \
+		$(1)/opt/etc/turnserver
 endef
 
 CONFIGURE_ARGS+= \
+	--confdir=/opt/etc \
 	--disable-rpath \
-	--schemadir=/usr/share/coturn \
-	--turndbdir=/etc/turnserver
+	--schemadir=/opt/share/coturn \
+	--turndbdir=/opt/var/lib/turn
 
 CONFIGURE_VARS+= \
 	ARCHIVERCMD="$(TARGET_AR) -r" \
