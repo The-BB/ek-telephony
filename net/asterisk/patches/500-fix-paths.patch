@@ -9,30 +9,6 @@
  			struct stat st;
  			int i;
  			for (i = 0; i < 3; i++) {
---- a/apps/app_dahdiras.c
-+++ b/apps/app_dahdiras.c
-@@ -72,7 +72,7 @@
- static const char app[] = "DAHDIRAS";
- 
- #define PPP_MAX_ARGS	32
--#define PPP_EXEC	"/usr/sbin/pppd"
-+#define PPP_EXEC	"/opt/sbin/pppd"
- 
- static pid_t spawn_ras(struct ast_channel *chan, char *args)
- {
---- a/apps/app_ices.c
-+++ b/apps/app_ices.c
-@@ -69,8 +69,8 @@
- 
-  ***/
- 
--#define path_BIN "/usr/bin/"
--#define path_LOCAL "/usr/local/bin/"
-+#define path_BIN "/opt/bin/"
-+#define path_LOCAL "/opt/bin/"
- 
- static char *app = "ICES";
- 
 --- a/apps/app_minivm.c
 +++ b/apps/app_minivm.c
 @@ -538,7 +538,7 @@
@@ -46,33 +22,18 @@
  #define EOL			"\r\n"
 --- a/apps/app_mp3.c
 +++ b/apps/app_mp3.c
-@@ -48,8 +48,8 @@
- #include "asterisk/app.h"
+@@ -49,7 +49,7 @@
  #include "asterisk/format_cache.h"
  
--#define LOCAL_MPG_123 "/usr/local/bin/mpg123"
+ #define LOCAL_MPG_123 "/usr/local/bin/mpg123"
 -#define MPG_123 "/usr/bin/mpg123"
-+#define LOCAL_MPG_123 "/opt/bin/mpg123"
 +#define MPG_123 "/opt/bin/mpg123"
  
  /*** DOCUMENTATION
  	<application name="MP3Player" language="en_US">
---- a/apps/app_nbscat.c
-+++ b/apps/app_nbscat.c
-@@ -61,8 +61,8 @@
- 	</application>
-  ***/
- 
--#define LOCAL_NBSCAT "/usr/local/bin/nbscat8k"
--#define NBSCAT "/usr/bin/nbscat8k"
-+#define LOCAL_NBSCAT "/opt/bin/nbscat8k"
-+#define NBSCAT "/opt/bin/nbscat8k"
- 
- #ifndef AF_LOCAL
- #define AF_LOCAL AF_UNIX
 --- a/apps/app_voicemail.c
 +++ b/apps/app_voicemail.c
-@@ -528,7 +528,7 @@ static AST_LIST_HEAD_STATIC(vmstates, vm
+@@ -532,7 +532,7 @@ static AST_LIST_HEAD_STATIC(vmstates, vm
  
  /* Default mail command to mail voicemail. Change it with the
   * mailcmd= command in voicemail.conf */
@@ -111,7 +72,7 @@
  static struct ast_flags global_flags = { RADIUS_FLAG_USEGMTIME | RADIUS_FLAG_LOGUNIQUEID | RADIUS_FLAG_LOGUSERFIELD };
 --- a/channels/chan_alsa.c
 +++ b/channels/chan_alsa.c
-@@ -1019,7 +1019,7 @@ static int load_module(void)
+@@ -1021,7 +1021,7 @@ static int load_module(void)
  
  	if (soundcard_init() < 0) {
  		ast_verb(2, "No sound card detected -- console channel will be unavailable\n");
@@ -120,44 +81,9 @@
  		unload_module();
  
  		return AST_MODULE_LOAD_DECLINE;
---- a/channels/chan_oss.c
-+++ b/channels/chan_oss.c
-@@ -1420,7 +1420,7 @@ openit:
- #ifdef TRYOPEN
- 	if (setformat(o, O_RDWR) < 0) {	/* open device */
- 		ast_verb(1, "Device %s not detected\n", ctg);
--		ast_verb(1, "Turn off OSS support by adding " "'noload=chan_oss.so' in /etc/asterisk/modules.conf\n");
-+		ast_verb(1, "Turn off OSS support by adding " "'noload=chan_oss.so' in /opt/etc/asterisk/modules.conf\n");
- 		goto error;
- 	}
- 	if (o->duplex != CHAN_OSS_DUPLEX_FULL)
---- a/channels/misdn_config.c
-+++ b/channels/misdn_config.c
-@@ -397,10 +397,10 @@ static const struct misdn_cfg_spec gen_s
- 		"\t3 - very Verbose, the above + lots of Driver specific infos\n"
- 		"\t4 - even more Verbose than 3" },
- #ifndef MISDN_1_2
--	{ "misdn_init", MISDN_GEN_MISDN_INIT, MISDN_CTYPE_STR, "/etc/misdn-init.conf", NONE,
-+	{ "misdn_init", MISDN_GEN_MISDN_INIT, MISDN_CTYPE_STR, "/opt/etc/misdn-init.conf", NONE,
- 		"Set the path to the misdn-init.conf (for nt_ptp mode checking)." },
- #endif
--	{ "tracefile", MISDN_GEN_TRACEFILE, MISDN_CTYPE_STR, "/var/log/asterisk/misdn.log", NONE,
-+	{ "tracefile", MISDN_GEN_TRACEFILE, MISDN_CTYPE_STR, "/opt/var/log/asterisk/misdn.log", NONE,
- 		"Set the path to the massively growing trace file, if you want that." },
- 	{ "bridging", MISDN_GEN_BRIDGING, MISDN_CTYPE_BOOL, "yes", NONE,
- 		"Set this to yes if you want mISDN_dsp to bridge the calls in HW." },
-@@ -421,7 +421,7 @@ static const struct misdn_cfg_spec gen_s
- 		"are running calls. with this option you can avoid dropping them" },
- 	{ "ntdebugflags", MISDN_GEN_NTDEBUGFLAGS, MISDN_CTYPE_INT, "0", NONE,
- 	  	"No description yet."},
--	{ "ntdebugfile", MISDN_GEN_NTDEBUGFILE, MISDN_CTYPE_STR, "/var/log/misdn-nt.log", NONE,
-+	{ "ntdebugfile", MISDN_GEN_NTDEBUGFILE, MISDN_CTYPE_STR, "/opt/var/log/misdn-nt.log", NONE,
- 	  	"No description yet." }
- };
- 
 --- a/main/config.c
 +++ b/main/config.c
-@@ -1991,7 +1991,7 @@ static int process_text_line(struct ast_
+@@ -2006,7 +2006,7 @@ static int process_text_line(struct ast_
  
  			if (!ast_test_flag(&flags, CONFIG_FLAG_NOCACHE))
  				config_cache_attribute(configfile, ATTRIBUTE_EXEC, NULL, who_asked);
@@ -210,7 +136,7 @@
  
 --- a/main/term.c
 +++ b/main/term.c
-@@ -46,9 +46,7 @@ static char enddata[80] = "";
+@@ -46,9 +46,9 @@ static char enddata[80] = "";
  static char quitdata[80] = "";
  
  static const char * const termpath[] = {
@@ -218,6 +144,8 @@
 -	"/usr/local/share/misc/terminfo",
 -	"/usr/lib/terminfo",
 +	"/opt/share/terminfo",
++	"/opt/share/misc/terminfo",
++	"/opt/lib/terminfo",
  	NULL
  	};
  
@@ -234,13 +162,11 @@
  	case CLI_GENERATE:
 --- a/res/res_musiconhold.c
 +++ b/res/res_musiconhold.c
-@@ -205,8 +205,8 @@ struct mohdata {
- 
+@@ -208,7 +208,7 @@ struct mohdata {
  static struct ao2_container *mohclasses;
  
--#define LOCAL_MPG_123 "/usr/local/bin/mpg123"
+ #define LOCAL_MPG_123 "/usr/local/bin/mpg123"
 -#define MPG_123 "/usr/bin/mpg123"
-+#define LOCAL_MPG_123 "/opt/bin/mpg123"
 +#define MPG_123 "/opt/bin/mpg123"
  #define MAX_MP3S 256
  
@@ -302,17 +228,6 @@
  
  	sqlite3_close(sql3db);
  	return 0;
---- a/utils/conf2ael.c
-+++ b/utils/conf2ael.c
-@@ -58,7 +58,7 @@
- #include "asterisk/pval.h"
- #include "asterisk/extconf.h"
- 
--const char *ast_config_AST_CONFIG_DIR = "/etc/asterisk";	/* placeholder */
-+const char *ast_config_AST_CONFIG_DIR = "/opt/etc/asterisk";	/* placeholder */
- 
- void get_start_stop(unsigned int *word, int bitsperword, int totalbits, int *start, int *end);
- int all_bits_set(unsigned int *word, int bitsperword, int totalbits);
 --- a/utils/extconf.c
 +++ b/utils/extconf.c
 @@ -3025,7 +3025,7 @@ static int process_text_line(struct ast_
@@ -324,17 +239,6 @@
  					if (snprintf(cmd, sizeof(cmd), "%s > %s 2>&1", cur, exec_file) >= sizeof(cmd)) {
  						ast_log(LOG_ERROR, "Failed to construct command string to execute %s.\n", cur);
  
---- a/utils/muted.c
-+++ b/utils/muted.c
-@@ -74,7 +74,7 @@
- 
- #define ast_strlen_zero(a)	(!(*(a)))
- 
--static char *config = "/etc/asterisk/muted.conf";
-+static char *config = "/opt/etc/asterisk/muted.conf";
- 
- static char host[256] = "";
- static char user[256] = "";
 --- a/utils/smsq.c
 +++ b/utils/smsq.c
 @@ -443,7 +443,7 @@ main (int argc, const char *argv[])
