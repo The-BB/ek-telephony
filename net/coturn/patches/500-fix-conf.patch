@@ -86,7 +86,7 @@
  
  # Option to redirect all log output into system log (syslog).
  #
-@@ -644,10 +645,9 @@
+@@ -649,10 +650,9 @@
  # allowed-peer-ip=83.166.68.45
  
  # File name to store the pid of the process.
@@ -99,7 +99,7 @@
  
  # Require authentication of the STUN Binding request.
  # By default, the clients are allowed anonymous access to the STUN Binding functionality.
-@@ -670,12 +670,12 @@
+@@ -685,12 +685,12 @@
  # User name to run the process. After the initialization, the turnserver process
  # will attempt to change the current user ID to that user.
  #
@@ -114,7 +114,7 @@
  
  # Turn OFF the CLI support.
  # By default it is always ON.
-@@ -686,7 +686,7 @@
+@@ -701,7 +701,7 @@
  #Local system IP address to be used for CLI server endpoint. Default value
  # is 127.0.0.1.
  #
@@ -123,7 +123,7 @@
  
  # CLI server port. Default is 5766.
  #
-@@ -702,26 +702,26 @@
+@@ -717,26 +717,26 @@
  #
  # Or unsecure form for the same password:
  #

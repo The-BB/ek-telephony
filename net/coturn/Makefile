@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=coturn
-PKG_VERSION:=4.5.2
-PKG_RELEASE:=5
+PKG_VERSION:=4.6.1
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/coturn/coturn/tar.gz/$(PKG_VERSION)?
-PKG_HASH:=462f1aa5c2455f28c1c8df09510d9e88ab14a1159b5e33ea5be5095262e83745
+PKG_HASH:=8fba86e593ed74adc46e002e925cccff2819745371814f42465fbe717483f1d8
 
 PKG_LICENSE:=BSD-COTURN-CITRIX COMBINED-CITRIX-VIVOCHA-BSD MIT-HASH
 PKG_LICENSE_FILES:=LICENSE src/apps/relay/dbdrivers/* src/server/ns_turn_khash.h
@@ -110,11 +110,11 @@ ifneq ($(CONFIG_COTURN_ENABLE_MYSQL)$(CONFIG_COTURN_ENABLE_POSTGRESQL)$(CONFIG_C
 	$(INSTALL_DATA) \
 		$(PKG_INSTALL_DIR)/opt/share/coturn/{schema,testsqldbsetup}.sql \
 		$(1)/opt/share/coturn
-  ifeq ($(CONFIG_COTURN_ENABLE_SQLITE),y)
+endif
+ifeq ($(CONFIG_COTURN_ENABLE_SQLITE),y)
 	$(INSTALL_DIR) $(1)/opt/var/lib/turn
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/examples/var/db/turndb \
 		$(1)/opt/var/lib/turn
-  endif
 endif
 ifneq ($(CONFIG_COTURN_ENABLE_REDIS),)
 	$(INSTALL_DATA) \
