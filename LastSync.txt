@@ -1,8 +1,8 @@
-commit ed951ea624360bc46f7324c51bcbfd7860a1aa73 (HEAD -> master, origin/master, origin/HEAD)
-Merge: 87a78e0 e024681
+commit 54be049dd9474c5f241fe6a838df2465fb46c670 (HEAD -> master, origin/master, origin/HEAD)
+Merge: b1bfd7d 26bb868
 Author: micmac1 <sebastian_ml@gmx.net>
-Date:   Sat Nov 19 08:40:33 2022 +0100
+Date:   Sun Feb 12 18:33:38 2023 +0100
 
-    Merge pull request #790 from micmac1/init-return
+    Merge pull request #803 from cotequeiroz/OpenSSL3
     
-    Treewide: Use return in init scripts instead of exit
+    freeswitch,coturn: Prepare for OpenSSL 3.0 upgrade
