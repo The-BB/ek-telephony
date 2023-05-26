@@ -1,8 +1,8 @@
-commit 54be049dd9474c5f241fe6a838df2465fb46c670 (HEAD -> master, origin/master, origin/HEAD)
-Merge: b1bfd7d 26bb868
+commit 27be55e0a7a98e3bb1371967dcc2fb6f413e8ddc (HEAD -> master, origin/openwrt-23.05, origin/master, origin/HEAD)
+Merge: afad179 8bd8f5e
 Author: micmac1 <sebastian_ml@gmx.net>
-Date:   Sun Feb 12 18:33:38 2023 +0100
+Date:   Fri May 19 10:45:34 2023 +0200
 
-    Merge pull request #803 from cotequeiroz/OpenSSL3
+    Merge pull request #810 from micmac1/fs-musl-1.2.4
     
-    freeswitch,coturn: Prepare for OpenSSL 3.0 upgrade
+    freeswitch: fix compile against musl-1.2.4
