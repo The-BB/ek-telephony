@@ -1,8 +1,8 @@
-commit 27be55e0a7a98e3bb1371967dcc2fb6f413e8ddc (HEAD -> master, origin/openwrt-23.05, origin/master, origin/HEAD)
-Merge: afad179 8bd8f5e
+commit c093d20a53afda4a0fe79c25a14406617018f57c (HEAD -> master, origin/master, origin/HEAD)
+Merge: 6e1c2e9 3d063ac
 Author: micmac1 <sebastian_ml@gmx.net>
-Date:   Fri May 19 10:45:34 2023 +0200
+Date:   Sun Jul 23 15:45:02 2023 +0200
 
-    Merge pull request #810 from micmac1/fs-musl-1.2.4
+    Merge pull request #822 from micmac1/ast-iax2-crash
     
-    freeswitch: fix compile against musl-1.2.4
+    asterisk: add upstream patch against iax2 crash
