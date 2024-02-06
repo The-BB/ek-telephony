@@ -9,12 +9,12 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=rtpengine
-PKG_VERSION:=10.5.2.6
-PKG_RELEASE:=3
+PKG_VERSION:=11.5.1.18
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-mr$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/sipwise/rtpengine/tar.gz/mr$(PKG_VERSION)?
-PKG_HASH:=6f6d5cc2ebf27b6361ed2bd2f86a0ca74103503fd1a14af69ed423dba8340bc4
+PKG_HASH:=d5b0288ec02164b13730c14976425160d9a0b42b1c74796f8d9e59649e705fa6
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(BUILD_VARIANT)/$(PKG_NAME)-mr$(PKG_VERSION)
 
@@ -48,8 +48,10 @@ ENGINE_DEPENDS := \
 	+libmosquitto \
 	+libopenssl \
 	+libpcap \
-	+libpcre \
+	+libpcre2 \
 	+libwebsockets-openssl \
+	+libopus \
+	+xmlrpc-c \
 	+xmlrpc-c-client \
 	+zlib
 
@@ -65,7 +67,8 @@ RECORDING_DEPENDS := \
 	+glib2 \
 	+libffmpeg-full \
 	+libmariadb \
-	+libopenssl
+	+libopenssl \
+	+libcurl
 
 RTPENGINE_USERID:=378
 RTPENGINE_GROUPID:=$(RTPENGINE_USERID)
