@@ -1,8 +1,8 @@
-commit c093d20a53afda4a0fe79c25a14406617018f57c (HEAD -> master, origin/master, origin/HEAD)
-Merge: 6e1c2e9 3d063ac
+commit 51c6f587c7f2f08d3f115adc8a1526753bc147e1 (HEAD -> master, origin/master, origin/HEAD)
+Merge: 352384f 7e66d0e
 Author: micmac1 <sebastian_ml@gmx.net>
-Date:   Sun Jul 23 15:45:02 2023 +0200
+Date:   Wed Jan 31 18:35:54 2024 +0100
 
-    Merge pull request #822 from micmac1/ast-iax2-crash
+    Merge pull request #856 from micmac1/sipp-372
     
-    asterisk: add upstream patch against iax2 crash
+    sipp: bump to 3.7.2
