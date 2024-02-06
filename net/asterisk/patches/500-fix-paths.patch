@@ -33,7 +33,7 @@
  	<application name="MP3Player" language="en_US">
 --- a/apps/app_voicemail.c
 +++ b/apps/app_voicemail.c
-@@ -532,7 +532,7 @@ static AST_LIST_HEAD_STATIC(vmstates, vm
+@@ -633,7 +633,7 @@ static AST_LIST_HEAD_STATIC(vmstates, vm
  
  /* Default mail command to mail voicemail. Change it with the
   * mailcmd= command in voicemail.conf */
@@ -162,7 +162,7 @@
  	case CLI_GENERATE:
 --- a/res/res_musiconhold.c
 +++ b/res/res_musiconhold.c
-@@ -208,7 +208,7 @@ struct mohdata {
+@@ -210,7 +210,7 @@ struct mohdata {
  static struct ao2_container *mohclasses;
  
  #define LOCAL_MPG_123 "/usr/local/bin/mpg123"
