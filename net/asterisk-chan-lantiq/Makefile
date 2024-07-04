@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=asterisk-chan-lantiq
-PKG_RELEASE:=1
+PKG_RELEASE:=4
 
 PKG_SOURCE_URL:=https://github.com/kochstefan/asterisk_channel_lantiq.git
 PKG_SOURCE_VERSION:=2f029ec8778420538c8151c6aceba0f7b44b07c9
 PKG_SOURCE_DATE:=2021-09-11
-PKG_MIRROR_HASH:=0c57aeb33dc7efb0078e77907e0bc616f1714251e64d647a59faffe5af8bac73
+PKG_MIRROR_HASH:=9691624fb3465fb6af4f5d391dc4c0fc99dbb095e29cbef0574cf5838fb27053
 PKG_SOURCE_PROTO:=git
 
 PKG_LICENSE:=GPL-2.0
@@ -31,6 +31,7 @@ define Package/$(PKG_NAME)
   TITLE:=Lantiq channel driver
   URL:=https://github.com/kochstefan/asterisk_channel_lantiq
   DEPENDS:=+asterisk +kmod-ltq-vmmc
+  USERID:=asterisk=385::vmmc=386
 endef
 
 define Package/$(PKG_NAME)/description
