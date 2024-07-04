@@ -1,0 +1,17 @@
+--- a/Makefile
++++ b/Makefile
+@@ -1,4 +1,4 @@
+-prefix=/usr/local
++prefix=/opt
+ exec_prefix=$(prefix)
+ libdir=$(exec_prefix)/lib
+ 
+@@ -38,7 +38,7 @@ codec_opus_open_source: DEFS+=-DAST_MODU
+ 	-DAST_MODULE_SELF_SYM=__internal_codec_opus_open_source_self
+ codec_opus_open_source: codecs/codec_opus_open_source.so
+ 
+-format_ogg_opus_open_source: CPATH+=-I$(STAGING_DIR)/usr/include/opus
++format_ogg_opus_open_source: CPATH+=-I$(STAGING_DIR)/opt/include/opus
+ format_ogg_opus_open_source: LIBS+=-lopus -lopusfile
+ format_ogg_opus_open_source: DEFS+=-DAST_MODULE=\"format_ogg_opus_open_source\" \
+ 	-DAST_MODULE_SELF_SYM=__internal_format_ogg_opus_open_source_self
