@@ -1,6 +1,6 @@
 --- a/configure
 +++ b/configure
-@@ -1031,7 +1031,7 @@ OSCFLAGS="${OSCFLAGS} ${TURN_NO_SCTP} ${
+@@ -1033,7 +1033,7 @@ OSCFLAGS="${OSCFLAGS} ${TURN_NO_SCTP} ${
  
  if ! [ -z "${TURN_ACCEPT_RPATH}" ] ; then
    if [ -z "${TURN_DISABLE_RPATH}" ] ; then
