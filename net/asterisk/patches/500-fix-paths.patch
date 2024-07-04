@@ -33,7 +33,7 @@
  	<application name="MP3Player" language="en_US">
 --- a/apps/app_voicemail.c
 +++ b/apps/app_voicemail.c
-@@ -633,7 +633,7 @@ static AST_LIST_HEAD_STATIC(vmstates, vm
+@@ -649,7 +649,7 @@ static AST_LIST_HEAD_STATIC(vmstates, vm
  
  /* Default mail command to mail voicemail. Change it with the
   * mailcmd= command in voicemail.conf */
@@ -83,15 +83,15 @@
  		return AST_MODULE_LOAD_DECLINE;
 --- a/main/config.c
 +++ b/main/config.c
-@@ -2006,7 +2006,7 @@ static int process_text_line(struct ast_
+@@ -2098,7 +2098,7 @@ static int process_text_line(struct ast_
  
  			if (!ast_test_flag(&flags, CONFIG_FLAG_NOCACHE))
  				config_cache_attribute(configfile, ATTRIBUTE_EXEC, NULL, who_asked);
 -			snprintf(exec_file, sizeof(exec_file), "/var/tmp/exec.%d%d.%ld", (int)now.tv_sec, (int)now.tv_usec, (long)pthread_self());
 +			snprintf(exec_file, sizeof(exec_file), "/opt/tmp/exec.%d%d.%ld", (int)now.tv_sec, (int)now.tv_usec, (long)pthread_self());
- 			if (snprintf(cmd, sizeof(cmd), "%s > %s 2>&1", cur, exec_file) >= sizeof(cmd)) {
- 				ast_log(LOG_ERROR, "Failed to construct command string to execute %s.\n", cur);
- 
+ 			if (handle_include_exec(cur, exec_file)) {
+ 				return -1;
+ 			}
 --- a/main/stdtime/localtime.c
 +++ b/main/stdtime/localtime.c
 @@ -337,7 +337,7 @@ static void common_startup(void) {
