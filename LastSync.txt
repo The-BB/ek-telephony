@@ -1,8 +1,8 @@
-commit f057876113cf461caf6444e806299128645bcfc2 (HEAD -> master, origin/master, origin/HEAD)
-Merge: a21103a d1123a2
+commit d3f320558f471c192dff1447b4b40a01d6146953 (HEAD -> master, origin/master, origin/HEAD)
+Merge: f057876 6c4f646
 Author: micmac1 <sebastian_ml@gmx.net>
-Date:   Tue Jul 2 09:37:45 2024 +0200
+Date:   Wed Aug 7 22:07:10 2024 +0200
 
-    Merge pull request #877 from dangowrt/chan-lantiq-log-improvements
+    Merge pull request #880 from micmac1/fs-1.10.12
     
-    asterisk-chan-lantiq: import patches improving log output
+    freeswitch: bump to 1.10.12 (and mark as BROKEN)
