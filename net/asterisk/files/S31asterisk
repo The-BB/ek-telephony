@@ -1,10 +1,36 @@
 #!/bin/sh
 
 ENABLED=yes
-PROCS=asterisk
-ARGS=""
+
+DESC="Asterisk server"
+PROCS="asterisk"
+PROG="/opt/sbin/$PROCS"
+
+pre_cmd() {
+  dbdir="/opt/var/lib/$PROCS/astdb"
+  logdir="/opt/var/log/$PROCS"
+  cdrcsvdir="$logdir/cdr-csv"
+  rundir="/opt/var/run/$PROCS"
+  spooldir="/opt/var/spool/$PROCS"
+  varlibdir="/opt/var/lib/$PROCS"
+
+  for i in \
+    "$logdir" \
+    "$cdrcsvdir" \
+    "$rundir" \
+    "$spooldir" \
+    "$varlibdir" \
+    "$dbdir"
+  do
+    if ! [ -e "$i" ]; then
+      mkdir -pm 0750 "$i"
+      [ -d "$i" ] && chown "$PROCS":"$PROCS" "$i"
+    fi
+  done
+}
+
+PRECMD="pre_cmd"
+ARGS="-U $PROCS"
 PREARGS=""
-DESC=$PROCS
-PATH=/opt/sbin:/opt/bin:/opt/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 . /opt/etc/init.d/rc.func
