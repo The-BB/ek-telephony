@@ -1,8 +1,8 @@
-commit d3f320558f471c192dff1447b4b40a01d6146953 (HEAD -> master, origin/master, origin/HEAD)
-Merge: f057876 6c4f646
+commit d6f42a48d2b044d125df786f7ad25026610be538 (HEAD -> master, origin/master, origin/HEAD)
+Merge: d3f3205 f846a07
 Author: micmac1 <sebastian_ml@gmx.net>
-Date:   Wed Aug 7 22:07:10 2024 +0200
+Date:   Sun Sep 8 10:53:02 2024 +0200
 
-    Merge pull request #880 from micmac1/fs-1.10.12
+    Merge pull request #883 from robho/yate_github
     
-    freeswitch: bump to 1.10.12 (and mark as BROKEN)
+    yate: bump to git snapshot from 2024-09-03
