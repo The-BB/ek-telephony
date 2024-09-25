@@ -1,8 +1,8 @@
-commit d6f42a48d2b044d125df786f7ad25026610be538 (HEAD -> master, origin/master, origin/HEAD)
-Merge: d3f3205 f846a07
+commit 7f4fa9e79193c1853e1761a68dca585849cff435 (HEAD -> master, origin/master, origin/HEAD)
+Merge: d6f42a4 5be34a6
 Author: micmac1 <sebastian_ml@gmx.net>
-Date:   Sun Sep 8 10:53:02 2024 +0200
+Date:   Tue Sep 24 12:15:10 2024 +0200
 
-    Merge pull request #883 from robho/yate_github
+    Merge pull request #882 from olivluca/patch-1
     
-    yate: bump to git snapshot from 2024-09-03
+    sofia-sip: removed "--disable-stun"
