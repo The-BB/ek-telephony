@@ -1,8 +1,16 @@
-commit 7f4fa9e79193c1853e1761a68dca585849cff435 (HEAD -> master, origin/master, origin/HEAD)
-Merge: d6f42a4 5be34a6
-Author: micmac1 <sebastian_ml@gmx.net>
-Date:   Tue Sep 24 12:15:10 2024 +0200
+commit 75acd1cdc29740a47454212cd48755b9abbd7a12 (HEAD -> master, origin/master, origin/HEAD)
+Author: Christian Marangi <ansuelsmth@gmail.com>
+Date:   Fri Nov 3 23:59:33 2023 +0100
 
-    Merge pull request #882 from olivluca/patch-1
+    freeswitch: add patch moving package to PCRE2
     
-    sofia-sip: removed "--disable-stun"
+    Add pending patch moving package to PCRE2 as PCRE is EOL and won't
+    receive any updates anymore.
+    
+    These patch were run uder the freeswitch CI and were validated with
+    their unit tests.
+    
+    Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+    [fix conflict, fix typo in commit message, remove @BROKEN dep, refresh
+    patches]
+    Signed-off-by: Stijn Tintel <stijn@linux-ipv6.be>
