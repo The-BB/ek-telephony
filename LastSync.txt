@@ -1,16 +1,9 @@
-commit 75acd1cdc29740a47454212cd48755b9abbd7a12 (HEAD -> master, origin/master, origin/HEAD)
-Author: Christian Marangi <ansuelsmth@gmail.com>
-Date:   Fri Nov 3 23:59:33 2023 +0100
+commit 0d8558a36828ac8d60b87b4645346c2e1b5b4b9c (HEAD -> master, origin/master, origin/HEAD)
+Author: Jiri Slachta <jiri@slachta.eu>
+Date:   Wed Nov 6 23:09:47 2024 +0100
 
-    freeswitch: add patch moving package to PCRE2
+    Update MAINTAINERS
     
-    Add pending patch moving package to PCRE2 as PCRE is EOL and won't
-    receive any updates anymore.
+    Mazi Lo does not maintain this repository.
     
-    These patch were run uder the freeswitch CI and were validated with
-    their unit tests.
-    
-    Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-    [fix conflict, fix typo in commit message, remove @BROKEN dep, refresh
-    patches]
-    Signed-off-by: Stijn Tintel <stijn@linux-ipv6.be>
+    Signed-off-by: Jiri Slachta <jiri@slachta.eu>
