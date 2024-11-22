@@ -1,8 +1,8 @@
-commit a99df6e46f803d67697be0ede2ff26efb835d81b (HEAD -> master, origin/master, origin/HEAD)
-Merge: ada4939 819fec7
+commit 2933d0084f0331fd7da1e2181ba64954a0c84199 (HEAD -> master, origin/master, origin/HEAD)
+Merge: a99df6e a7e3d78
 Author: Jiri Slachta <jiri@slachta.eu>
-Date:   Sun Nov 17 20:18:00 2024 +0100
+Date:   Thu Nov 21 20:52:32 2024 +0100
 
-    Merge pull request #888 from dddaniel/master
+    Merge pull request #890 from hnyman/gsm
     
-    baresip: Update to version 3.16.0 [v2]
+    gsmlib: Make version apk compatible
