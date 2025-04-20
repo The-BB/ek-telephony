@@ -1,8 +1,8 @@
-commit c8a8d621f95ab8be74a1a512c1ce25c50c84e94b (HEAD -> master, origin/master, origin/HEAD)
-Merge: 2933d00 2676410
+commit 2a1b0e11215ffc8e2b656d03b2913adc0df54969 (HEAD -> master, origin/master, origin/HEAD)
+Merge: c8a8d62 40ddf03
 Author: Jiri Slachta <jiri@slachta.eu>
-Date:   Tue Jan 7 09:56:21 2025 +0100
+Date:   Sat Apr 19 19:04:39 2025 +0200
 
-    Merge pull request #889 from dddaniel/master
+    Merge pull request #893 from systemcrash/kamailio
     
-    baresip: Use UCI for basic service configuration
+    kamailio: Kamailio 6.0.1
