@@ -72,6 +72,10 @@ MAKE_FLAGS+= \
 TARGET_CFLAGS+= \
 	-Wno-unused-const-variable
 
+ifeq ($(CONFIG_GCC_USE_VERSION_14),y)
+TARGET_CFLAGS+= -std=gnu90
+endif
+
 URLMAP:=$(CONFIG_SIPROXD_MAX_CLIENTS)
 RTPPROXY:=$(shell expr $(URLMAP) \* 2)
 
